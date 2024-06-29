@@ -1,0 +1,83 @@
+{
+  "name": "easi-env",
+  "displayName": "easi-env",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "browser": "./dist/web/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "myextension-sidebar-view",
+          "title": "My Extension",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "myextension-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "myextension-sidebar",
+          "name": "MyExtension",
+          "icon": "media/icon.svg",
+          "contextualTitle": "MyExtension"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "easi-env.addColor",
+        "category": "Calico Colors",
+        "title": "Add Color"
+      },
+      {
+        "command": "easi-env.clearColors",
+        "category": "Calico Colors",
+        "title": "Clear Colors",
+        "icon": "$(clear-all)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "easi-env.clearColors",
+          "group": "navigation",
+          "when": "view == easi-env.colorsView"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+    "pretest": "npm run compile-web",
+    "vscode:prepublish": "npm run package-web",
+    "compile-web": "webpack",
+    "watch-web": "webpack --watch",
+    "package-web": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts",
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@types/mocha": "^10.0.1",
+    "eslint": "^8.28.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3",
+    "@vscode/test-web": "^0.0.33",
+    "ts-loader": "^9.4.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "@types/webpack-env": "^1.18.0",
+    "assert": "^2.0.0",
+    "process": "^0.11.10"
+  }
+}
