@@ -30,28 +30,6 @@
           "contextualTitle": "MyExtension"
         }
       ]
-    },
-    "commands": [
-      {
-        "command": "easi-env.addColor",
-        "category": "Calico Colors",
-        "title": "Add Color"
-      },
-      {
-        "command": "easi-env.clearColors",
-        "category": "Calico Colors",
-        "title": "Clear Colors",
-        "icon": "$(clear-all)"
-      }
-    ],
-    "menus": {
-      "view/title": [
-        {
-          "command": "easi-env.clearColors",
-          "group": "navigation",
-          "when": "view == easi-env.colorsView"
-        }
-      ]
     }
   },
   "scripts": {
