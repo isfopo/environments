@@ -14,17 +14,17 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "myextension-sidebar-view",
+          "id": "easi-env-sidebar-view",
           "title": "My Extension",
           "icon": "assets/icon.svg"
         }
       ]
     },
     "views": {
-      "myextension-sidebar-view": [
+      "easi-env-sidebar-view": [
         {
           "type": "webview",
-          "id": "myextension-sidebar",
+          "id": "easi-env-sidebar",
           "name": "MyExtension",
           "icon": "media/icon.svg",
           "contextualTitle": "MyExtension"
