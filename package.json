@@ -15,7 +15,7 @@
       "activitybar": [
         {
           "id": "easi-env-sidebar-view",
-          "title": "My Extension",
+          "title": "EasiENV",
           "icon": "assets/icon.svg"
         }
       ]
@@ -25,9 +25,9 @@
         {
           "type": "webview",
           "id": "easi-env-sidebar",
-          "name": "MyExtension",
+          "name": "EasiENV",
           "icon": "media/icon.svg",
-          "contextualTitle": "MyExtension"
+          "contextualTitle": "EasiENV"
         }
       ]
     }
