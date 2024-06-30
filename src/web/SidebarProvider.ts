@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { getNonce } from "../helpers/getNonce";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -76,7 +77,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     // Use a nonce to only allow a specific script to be run.
     const nonce = getNonce();
 
-    return `<!DOCTYPE html>
+    return /* html */ `
+    <!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -97,16 +99,6 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         <p>Hello World!</p>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
-			</html>`;
+		</html>`;
   }
-}
-
-function getNonce() {
-  let text = "";
-  const possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
 }
