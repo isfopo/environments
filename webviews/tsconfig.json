@@ -1,0 +1,14 @@
+{
+    "extends": "@tsconfig/svelte/tsconfig.json",
+    "moduleResolution": "node",
+    "include": [
+        "./**/*",
+    ],
+    "exclude": [
+        "../node_modules/*"
+    ],
+    "compilerOptions": {
+        "strict": true,
+        "forceConsistentCasingInFileNames": true
+    }
+}
