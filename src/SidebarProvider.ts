@@ -62,10 +62,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   private _getHtmlForWebview(webview: vscode.Webview) {
     const styleResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "reset.css")
+      vscode.Uri.joinPath(this._extensionUri, "src", "styles/reset.css")
     );
     const styleVSCodeUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "vscode.css")
+      vscode.Uri.joinPath(this._extensionUri, "src", "styles/vscode.css")
     );
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "out", "compiled/sidebar.js")
