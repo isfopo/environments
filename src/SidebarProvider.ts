@@ -7,7 +7,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
 
-  public resolveWebviewView(webviewView: vscode.WebviewView) {
+  public resolveWebviewView(webviewView: vscode.WebviewView): void {
     this._view = webviewView;
 
     webviewView.webview.options = {
@@ -20,7 +20,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     // Listen for messages from the Sidebar component and execute action
-    webviewView.webview.onDidReceiveMessage(async (data) => {
+    webviewView.webview.onDidReceiveMessage(async (data): Promise<void> => {
       switch (data.type) {
         case "onFetchText": {
           const editor = vscode.window.activeTextEditor;
@@ -56,11 +56,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  public revive(panel: vscode.WebviewView) {
+  public revive(panel: vscode.WebviewView): void {
     this._view = panel;
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview) {
+  private _getHtmlForWebview(webview: vscode.Webview): string {
     const styleResetUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "src", "styles/reset.css")
     );
