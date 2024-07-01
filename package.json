@@ -9,7 +9,7 @@
   "categories": [
     "Other"
   ],
-  "browser": "./dist/web/extension.js",
+  "browser": "./dist/extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
@@ -33,7 +33,7 @@
     }
   },
   "scripts": {
-    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/test/suite/index.js",
     "pretest": "npm run compile-web",
     "vscode:prepublish": "npm run package-web",
     "compile-web": "webpack",
