@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./helpers/getNonce";
+import type { PostMessageOptions } from "../globals";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -20,40 +21,29 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
     // Listen for messages from the Sidebar component and execute action
-    webviewView.webview.onDidReceiveMessage(async (data): Promise<void> => {
-      switch (data.type) {
-        case "onFetchText": {
-          const editor = vscode.window.activeTextEditor;
-
-          if (editor === undefined) {
-            vscode.window.showErrorMessage("No active text editor");
-            return;
+    webviewView.webview.onDidReceiveMessage(
+      async (data: PostMessageOptions): Promise<void> => {
+        switch (data.type) {
+          case "onSidebarOpen": {
+            break;
           }
-
-          const text = editor.document.getText(editor.selection);
-          // send message back to the sidebar component
-          this._view?.webview.postMessage({
-            type: "onSelectedText",
-            value: text,
-          });
-          break;
-        }
-        case "onInfo": {
-          if (!data.value) {
-            return;
+          case "onInfo": {
+            if (!data.value) {
+              return;
+            }
+            vscode.window.showInformationMessage(data.value);
+            break;
           }
-          vscode.window.showInformationMessage(data.value);
-          break;
-        }
-        case "onError": {
-          if (!data.value) {
-            return;
+          case "onError": {
+            if (!data.value) {
+              return;
+            }
+            vscode.window.showErrorMessage(data.value);
+            break;
           }
-          vscode.window.showErrorMessage(data.value);
-          break;
         }
       }
-    });
+    );
   }
 
   public revive(panel: vscode.WebviewView): void {
