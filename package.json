@@ -1,6 +1,6 @@
 {
-  "name": "easi-env",
-  "displayName": "easi-env",
+  "name": "environments",
+  "displayName": "environments",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -14,20 +14,20 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "easi-env-sidebar-view",
-          "title": "EasiENV",
+          "id": "environments-sidebar-view",
+          "title": "Environments",
           "icon": "assets/icon.svg"
         }
       ]
     },
     "views": {
-      "easi-env-sidebar-view": [
+      "environments-sidebar-view": [
         {
           "type": "webview",
-          "id": "easi-env-sidebar",
-          "name": "EasiENV",
+          "id": "environments-sidebar",
+          "name": "Environments",
           "icon": "media/icon.svg",
-          "contextualTitle": "EasiENV"
+          "contextualTitle": "Environments"
         }
       ]
     }
