@@ -1,11 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  let text = "";
-
-  function fetchText() {
-    // send message to the extension asking for the selected text
-  }
+  let files = [];
   
   onMount(() => {
     // Listen for messages from the extension
@@ -14,8 +10,8 @@
     window.addEventListener("message", (event) => {
       const message = event.data;
       switch (message.type) {
-        case "onSelectedText": {
-          text = message.value;
+        case "onFiles": {
+          files = message.value;
           break;
         }
       }
@@ -23,10 +19,7 @@
   });
 </script>
 
-<h1>Hello vs code</h1>
-
-<style>
-  h1 {
-    color: red;
-  }
-</style>
+{#each files as file}
+  <h2>{file.name}</h2>
+  <p>{file.content}</p>
+{/each}
