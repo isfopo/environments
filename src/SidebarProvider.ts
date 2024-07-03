@@ -39,7 +39,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               );
 
               const fileContentStrings = fileContents.map((content) =>
-                String.fromCharCode.apply(null, content as unknown as number[])
+                new TextDecoder().decode(content)
               );
 
               const fileData = files.map((file, index) => ({
