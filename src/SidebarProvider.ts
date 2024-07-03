@@ -25,6 +25,31 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       async (data: PostMessageOptions): Promise<void> => {
         switch (data.type) {
           case "onSidebarOpen": {
+            console.log("sidebar open");
+            for (const { uri } of vscode.workspace.workspaceFolders || []) {
+              const files = await vscode.workspace.fs.readDirectory(uri);
+              const fileUris = files
+                .filter((file) => file[0].startsWith(".env"))
+                .map((file) => vscode.Uri.joinPath(uri, file[0]));
+
+              const fileContents = await Promise.all(
+                fileUris.map((uri) => vscode.workspace.fs.readFile(uri))
+              );
+              const fileContentStrings = fileContents.map((content) =>
+                content.toString()
+              );
+              const fileData = files.map((file, index) => ({
+                name: file[0],
+                uri: fileUris[index].toString(),
+                content: fileContentStrings[index],
+              }));
+              console.log(fileData);
+              webviewView.webview.postMessage({
+                type: "onFiles",
+                value: fileData,
+              });
+            }
+
             break;
           }
           case "onInfo": {
