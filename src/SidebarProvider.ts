@@ -25,37 +25,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       async (data: PostMessageOptions): Promise<void> => {
         switch (data.type) {
           case "onSidebarOpen": {
-            for (const { uri } of vscode.workspace.workspaceFolders || []) {
-              const files = (
-                await vscode.workspace.fs.readDirectory(uri)
-              ).filter((file) => file[0].startsWith(".env"));
-
-              const fileUris = files.map((file) =>
-                vscode.Uri.joinPath(uri, file[0])
-              );
-
-              const fileContents = await Promise.all(
-                fileUris.map((uri) => vscode.workspace.fs.readFile(uri))
-              );
-
-              const fileContentStrings = fileContents.map((content) =>
-                new TextDecoder().decode(content)
-              );
-
-              const fileData = files.map((file, index) => ({
-                name: file[0],
-                uri: fileUris[index].toString(),
-                content: fileContentStrings[index],
-              }));
-
-              console.log(fileData);
-
-              webviewView.webview.postMessage({
-                type: "onFiles",
-                value: fileData,
-              });
-            }
-
+            this._handleOnSidebarOpen(webviewView);
             break;
           }
           case "onInfo": {
@@ -120,5 +90,36 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 		</html>`;
+  }
+
+  private async _handleOnSidebarOpen(
+    webviewView: vscode.WebviewView
+  ): Promise<void> {
+    for (const { uri } of vscode.workspace.workspaceFolders || []) {
+      const files = (await vscode.workspace.fs.readDirectory(uri)).filter(
+        (file) => file[0].startsWith(".env")
+      );
+
+      const fileUris = files.map((file) => vscode.Uri.joinPath(uri, file[0]));
+
+      const fileContents = await Promise.all(
+        fileUris.map((uri) => vscode.workspace.fs.readFile(uri))
+      );
+
+      const fileContentStrings = fileContents.map((content) =>
+        new TextDecoder().decode(content)
+      );
+
+      const fileData = files.map((file, index) => ({
+        name: file[0],
+        uri: fileUris[index].toString(),
+        content: fileContentStrings[index],
+      }));
+
+      webviewView.webview.postMessage({
+        type: "onFiles",
+        value: fileData,
+      });
+    }
   }
 }
