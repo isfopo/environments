@@ -100,6 +100,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   private async _handleOnSidebarOpen(
     webviewView: vscode.WebviewView
   ): Promise<void> {
+    this._postFileData(webviewView);
+  }
+
+  private async _postFileData(webviewView: vscode.WebviewView): Promise<void> {
     const workplaceFileData: WorkplaceFileData[] = [];
 
     for (const folder of vscode.workspace.workspaceFolders || []) {
