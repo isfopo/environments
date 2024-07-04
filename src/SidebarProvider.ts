@@ -125,7 +125,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         ...folder,
       });
     }
-    console.log(workplaceFileData);
+
     webviewView.webview.postMessage({
       type: "onFiles",
       value: workplaceFileData,
