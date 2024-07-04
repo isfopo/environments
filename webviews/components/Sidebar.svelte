@@ -21,7 +21,7 @@
 </script>
 
 {#if files.length === 0}
-  <p>No .env files found.</p>
+  <p>No environment files found. Open a folder of your project to see the environment values.</p>
 {/if}
 
 {#each files as file}
