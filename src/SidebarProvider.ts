@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { getNonce } from "./helpers/getNonce";
-import type { PostMessageOptions } from "../globals";
+import type { PostMessageOptions, WorkplaceFileData } from "../globals";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -95,12 +95,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   private async _handleOnSidebarOpen(
     webviewView: vscode.WebviewView
   ): Promise<void> {
-    for (const { uri } of vscode.workspace.workspaceFolders || []) {
-      const files = (await vscode.workspace.fs.readDirectory(uri)).filter(
-        (file) => file[0].startsWith(".env")
-      );
+    const workplaceFileData: WorkplaceFileData[] = [];
 
-      const fileUris = files.map((file) => vscode.Uri.joinPath(uri, file[0]));
+    for (const folder of vscode.workspace.workspaceFolders || []) {
+      const files = (
+        await vscode.workspace.fs.readDirectory(folder.uri)
+      ).filter((file) => file[0].startsWith(".env"));
+
+      const fileUris = files.map((file) =>
+        vscode.Uri.joinPath(folder.uri, file[0])
+      );
 
       const fileContents = await Promise.all(
         fileUris.map((uri) => vscode.workspace.fs.readFile(uri))
@@ -116,10 +120,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         content: fileContentStrings[index],
       }));
 
-      webviewView.webview.postMessage({
-        type: "onFiles",
-        value: fileData,
+      workplaceFileData.push({
+        files: fileData,
+        ...folder,
       });
     }
+    console.log(workplaceFileData);
+    webviewView.webview.postMessage({
+      type: "onFiles",
+      value: workplaceFileData,
+    });
   }
 }

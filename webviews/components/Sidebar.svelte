@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
+  import type { FileData } from "../../globals.d.ts"
 
-  let files = [];
+  let files: FileData[] = [];
   
   onMount(() => {
     // Listen for messages from the extension
@@ -11,7 +12,7 @@
       const message = event.data;
       switch (message.type) {
         case "onFiles": {
-          files = message.value;
+          files = message.value[0].files;
           break;
         }
       }

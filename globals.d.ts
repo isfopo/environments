@@ -1,6 +1,6 @@
 /// <reference types="svelte" />
 
-import * as _vscode from "vscode";
+import type * as vscode from "vscode";
 
 export type PostMessageTypes =
   | "onSidebarOpen"
@@ -12,6 +12,16 @@ export interface PostMessageOptions {
   type: PostMessageTypes;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   value?: any;
+}
+
+export interface FileData {
+  name: string;
+  uri: string;
+  content: string;
+}
+
+export interface WorkplaceFileData extends vscode.WorkspaceFolder {
+  files: FileData[];
 }
 
 declare global {
