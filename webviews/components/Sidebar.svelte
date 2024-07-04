@@ -27,7 +27,7 @@
 {#each files as file}
   <h2>{file.name}</h2>
   {#each Object.entries(file.content) as key}  
-    <strong>{key[0]}</strong>
+    <strong>{key[0]}</strong>``
     <p>{key[1].value}</p>
   {/each}
 {/each}
