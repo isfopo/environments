@@ -20,6 +20,10 @@
   });
 </script>
 
+{#if files.length === 0}
+  <p>No .env files found.</p>
+{/if}
+
 {#each files as file}
   <h2>{file.name}</h2>
   <p>{file.content}</p>
