@@ -1,6 +1,11 @@
 import * as vscode from "vscode";
 import { getNonce } from "./helpers/getNonce";
-import type { PostMessageOptions, WorkplaceFileData } from "../globals";
+import type {
+  FileData,
+  PostMessageOptions,
+  WorkplaceFileData,
+} from "../globals";
+import { parseEnvironmentContent } from "./helpers/parse";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
@@ -114,11 +119,13 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         new TextDecoder().decode(content)
       );
 
-      const fileData = files.map((file, index) => ({
-        name: file[0],
-        uri: fileUris[index].toString(),
-        content: fileContentStrings[index],
-      }));
+      const fileData = files.map(
+        (file, index): FileData => ({
+          name: file[0],
+          uri: fileUris[index].toString(),
+          content: parseEnvironmentContent(fileContentStrings[index]),
+        })
+      );
 
       workplaceFileData.push({
         files: fileData,

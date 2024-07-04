@@ -17,7 +17,14 @@ export interface PostMessageOptions {
 export interface FileData {
   name: string;
   uri: string;
-  content: string;
+  content: EnvironmentContent;
+}
+
+export type EnvironmentContent = Record<string, EnvironmentKeyValue>;
+
+export interface EnvironmentKeyValue {
+  value: string;
+  type: "string" | "bool" | "number";
 }
 
 export interface WorkplaceFileData extends vscode.WorkspaceFolder {
