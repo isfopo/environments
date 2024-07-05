@@ -23,7 +23,7 @@
     "views": {
       "environments-sidebar-view": [
         {
-          "type": "webview",
+          "type": "tree",
           "id": "environments-sidebar",
           "name": "Environments",
           "icon": "media/icon.svg",

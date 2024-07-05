@@ -3,21 +3,25 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 export class EnvironmentTreeviewProvider
-  implements vscode.TreeDataProvider<any>
+  implements vscode.TreeDataProvider<vscode.TreeItem>
 {
-  onDidChangeTreeData?: vscode.Event<any> | undefined;
-  getTreeItem(element: any): vscode.TreeItem | Thenable<vscode.TreeItem> {
+  onDidChangeTreeData?: vscode.Event<vscode.TreeItem> | undefined;
+  getTreeItem(
+    element: vscode.TreeItem
+  ): vscode.TreeItem | Thenable<vscode.TreeItem> {
     throw new Error("Method not implemented.");
   }
-  getChildren(element?: any): vscode.ProviderResult<any[]> {
+  getChildren(
+    element?: vscode.TreeItem
+  ): vscode.ProviderResult<vscode.TreeItem[]> {
     throw new Error("Method not implemented.");
   }
-  getParent?(element: any) {
+  getParent?(element: vscode.TreeItem): vscode.ProviderResult<vscode.TreeItem> {
     throw new Error("Method not implemented.");
   }
   resolveTreeItem?(
     item: vscode.TreeItem,
-    element: any,
+    element: vscode.TreeItem,
     token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.TreeItem> {
     throw new Error("Method not implemented.");
