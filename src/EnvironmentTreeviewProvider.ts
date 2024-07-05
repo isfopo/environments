@@ -22,7 +22,15 @@ export class EnvironmentTreeviewProvider
       );
       return Promise.resolve([]);
     }
-    throw new Error("Method not implemented.");
+
+    return Promise.resolve([
+      new EnvironmentTreeItem(
+        "label",
+        "key",
+        "value",
+        vscode.TreeItemCollapsibleState.Collapsed
+      ),
+    ]);
   }
   getParent?(
     element: EnvironmentTreeItem
