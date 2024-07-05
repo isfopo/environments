@@ -25,7 +25,6 @@ export class EnvironmentTreeviewProvider
 
     return Promise.resolve([
       new EnvironmentTreeItem(
-        "label",
         "key",
         "value",
         vscode.TreeItemCollapsibleState.Collapsed
@@ -48,16 +47,15 @@ export class EnvironmentTreeviewProvider
 
 export class EnvironmentTreeItem extends vscode.TreeItem {
   constructor(
-    public readonly label: string,
     private readonly key: string,
     private readonly value: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly command?: vscode.Command
   ) {
-    super(label, collapsibleState);
+    super(key, collapsibleState);
 
     this.tooltip = this.value;
-    this.description = this.key;
+    this.description = this.value;
   }
 
   contextValue = "environment";
