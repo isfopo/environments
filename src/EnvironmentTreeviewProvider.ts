@@ -3,27 +3,64 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 export class EnvironmentTreeviewProvider
-  implements vscode.TreeDataProvider<vscode.TreeItem>
+  implements vscode.TreeDataProvider<EnvironmentTreeItem>
 {
-  onDidChangeTreeData?: vscode.Event<vscode.TreeItem> | undefined;
+  onDidChangeTreeData?: vscode.Event<EnvironmentTreeItem> | undefined;
   getTreeItem(
-    element: vscode.TreeItem
-  ): vscode.TreeItem | Thenable<vscode.TreeItem> {
+    element: EnvironmentTreeItem
+  ): EnvironmentTreeItem | Thenable<EnvironmentTreeItem> {
     throw new Error("Method not implemented.");
   }
   getChildren(
-    element?: vscode.TreeItem
-  ): vscode.ProviderResult<vscode.TreeItem[]> {
+    element?: EnvironmentTreeItem
+  ): vscode.ProviderResult<EnvironmentTreeItem[]> {
     throw new Error("Method not implemented.");
   }
-  getParent?(element: vscode.TreeItem): vscode.ProviderResult<vscode.TreeItem> {
+  getParent?(
+    element: EnvironmentTreeItem
+  ): vscode.ProviderResult<EnvironmentTreeItem> {
     throw new Error("Method not implemented.");
   }
   resolveTreeItem?(
-    item: vscode.TreeItem,
-    element: vscode.TreeItem,
+    item: EnvironmentTreeItem,
+    element: EnvironmentTreeItem,
     token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.TreeItem> {
+  ): vscode.ProviderResult<EnvironmentTreeItem> {
     throw new Error("Method not implemented.");
   }
+}
+
+export class EnvironmentTreeItem extends vscode.TreeItem {
+  constructor(
+    public readonly label: string,
+    private readonly version: string,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly command?: vscode.Command
+  ) {
+    super(label, collapsibleState);
+
+    this.tooltip = `${this.label}-${this.version}`;
+    this.description = this.version;
+  }
+
+  iconPath = {
+    light: path.join(
+      __filename,
+      "..",
+      "..",
+      "resources",
+      "light",
+      "dependency.svg"
+    ),
+    dark: path.join(
+      __filename,
+      "..",
+      "..",
+      "resources",
+      "dark",
+      "dependency.svg"
+    ),
+  };
+
+  contextValue = "dependency";
 }
