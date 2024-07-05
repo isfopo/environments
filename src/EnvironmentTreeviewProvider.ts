@@ -1,19 +1,26 @@
 import * as vscode from "vscode";
-import * as fs from "node:fs";
-import * as path from "node:path";
 
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<EnvironmentTreeItem>
 {
   onDidChangeTreeData?: vscode.Event<EnvironmentTreeItem> | undefined;
+
+  constructor(private workspaceRoot: string | undefined) {}
+
   getTreeItem(
     element: EnvironmentTreeItem
   ): EnvironmentTreeItem | Thenable<EnvironmentTreeItem> {
-    throw new Error("Method not implemented.");
+    return element;
   }
   getChildren(
     element?: EnvironmentTreeItem
   ): vscode.ProviderResult<EnvironmentTreeItem[]> {
+    if (!this.workspaceRoot) {
+      vscode.window.showInformationMessage(
+        "No workspace found. Open workspace to see environment."
+      );
+      return Promise.resolve([]);
+    }
     throw new Error("Method not implemented.");
   }
   getParent?(
@@ -33,34 +40,16 @@ export class EnvironmentTreeviewProvider
 export class EnvironmentTreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
-    private readonly version: string,
+    private readonly key: string,
+    private readonly value: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly command?: vscode.Command
   ) {
     super(label, collapsibleState);
 
-    this.tooltip = `${this.label}-${this.version}`;
-    this.description = this.version;
+    this.tooltip = this.value;
+    this.description = this.key;
   }
 
-  iconPath = {
-    light: path.join(
-      __filename,
-      "..",
-      "..",
-      "resources",
-      "light",
-      "dependency.svg"
-    ),
-    dark: path.join(
-      __filename,
-      "..",
-      "..",
-      "resources",
-      "dark",
-      "dependency.svg"
-    ),
-  };
-
-  contextValue = "dependency";
+  contextValue = "environment";
 }
