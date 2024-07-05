@@ -5,8 +5,6 @@ export class EnvironmentTreeviewProvider
 {
   onDidChangeTreeData?: vscode.Event<EnvironmentTreeItem> | undefined;
 
-  constructor(private workspaceRoot: string | undefined) {}
-
   getTreeItem(
     element: EnvironmentTreeItem
   ): EnvironmentTreeItem | Thenable<EnvironmentTreeItem> {
@@ -15,7 +13,10 @@ export class EnvironmentTreeviewProvider
   getChildren(
     element?: EnvironmentTreeItem
   ): vscode.ProviderResult<EnvironmentTreeItem[]> {
-    if (!this.workspaceRoot) {
+    if (
+      !vscode.workspace.workspaceFolders ||
+      vscode.workspace.workspaceFolders?.length === 0
+    ) {
       vscode.window.showInformationMessage(
         "No workspace found. Open workspace to see environment."
       );
