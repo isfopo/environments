@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { SidebarProvider } from "./SidebarProvider";
-import { EnvironmentTreeviewProvider } from "./EnviromentTreeviewProvider";
+import { EnvironmentTreeviewProvider } from "./EnvironmentTreeviewProvider";
 
 export function activate(context: vscode.ExtensionContext) {
   // Register the Sidebar Panel
