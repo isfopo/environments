@@ -11,6 +11,12 @@
   ],
   "browser": "./dist/extension.js",
   "contributes": {
+    "viewsWelcome": [
+      {
+        "view": "environments-sidebar-view",
+        "contents": "No .env files found."
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
