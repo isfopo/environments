@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { parseEnvironmentContent } from "./helpers/parse";
-import type { EnvironmentContent, EnvironmentKeyValue } from "../globals";
+import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
 
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
@@ -79,15 +79,6 @@ export class EnvironmentTreeviewProvider
     }
 
     return fileData;
-  }
-}
-
-export class IEnvironmentTreeItem extends vscode.TreeItem {
-  constructor(
-    public readonly label: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState
-  ) {
-    super(label, collapsibleState);
   }
 }
 
