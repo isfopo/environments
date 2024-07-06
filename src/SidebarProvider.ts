@@ -127,7 +127,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         (file, index): FileData => ({
           name: file[0],
           uri: fileUris[index].toString(),
-          content: parseEnvironmentContent(fileContentStrings[index]),
+          content: {},
         })
       );
 
