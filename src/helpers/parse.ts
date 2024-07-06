@@ -1,4 +1,4 @@
-import type { EnvironmentContent } from "../../globals";
+import type { EnvironmentContent } from "../types";
 
 export const parseEnvironmentContent = (
   content: string
