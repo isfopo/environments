@@ -1,18 +1,18 @@
 import * as vscode from "vscode";
 
 export class EnvironmentTreeviewProvider
-  implements vscode.TreeDataProvider<EnvironmentTreeItem>
+  implements vscode.TreeDataProvider<IEnvironmentTreeItem>
 {
-  onDidChangeTreeData?: vscode.Event<EnvironmentTreeItem> | undefined;
+  onDidChangeTreeData?: vscode.Event<IEnvironmentTreeItem> | undefined;
 
   getTreeItem(
-    element: EnvironmentTreeItem
-  ): EnvironmentTreeItem | Thenable<EnvironmentTreeItem> {
+    element: IEnvironmentTreeItem
+  ): IEnvironmentTreeItem | Thenable<IEnvironmentTreeItem> {
     return element;
   }
   getChildren(
-    element?: EnvironmentTreeItem
-  ): vscode.ProviderResult<EnvironmentTreeItem[]> {
+    element?: IEnvironmentTreeItem
+  ): vscode.ProviderResult<IEnvironmentTreeItem[]> {
     if (
       !vscode.workspace.workspaceFolders ||
       vscode.workspace.workspaceFolders?.length === 0
@@ -24,39 +24,62 @@ export class EnvironmentTreeviewProvider
     }
 
     return Promise.resolve([
-      new EnvironmentTreeItem(
-        "key",
+      new EnvironmentKeyValue(
+        "envkey",
         "value",
+        EnvironmentContentType.keyValue,
         vscode.TreeItemCollapsibleState.Collapsed
       ),
     ]);
   }
   getParent?(
-    element: EnvironmentTreeItem
-  ): vscode.ProviderResult<EnvironmentTreeItem> {
+    element: IEnvironmentTreeItem
+  ): vscode.ProviderResult<IEnvironmentTreeItem> {
     throw new Error("Method not implemented.");
   }
   resolveTreeItem?(
-    item: EnvironmentTreeItem,
-    element: EnvironmentTreeItem,
+    item: IEnvironmentTreeItem,
+    element: IEnvironmentTreeItem,
     token: vscode.CancellationToken
-  ): vscode.ProviderResult<EnvironmentTreeItem> {
+  ): vscode.ProviderResult<IEnvironmentTreeItem> {
     throw new Error("Method not implemented.");
   }
 }
 
-export class EnvironmentTreeItem extends vscode.TreeItem {
+export class IEnvironmentTreeItem extends vscode.TreeItem {
   constructor(
-    private readonly key: string,
-    private readonly value: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly command?: vscode.Command
+    public readonly label: string,
+    public readonly type: EnvironmentContentType,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState
   ) {
-    super(key, collapsibleState);
+    super(label, collapsibleState);
+  }
+}
 
+export enum EnvironmentContentType {
+  file = "file",
+  keyValue = "keyvalue",
+}
+
+export class EnvironmentKeyValue extends IEnvironmentTreeItem {
+  constructor(
+    public readonly label: string,
+    public readonly value: string,
+    public readonly type: EnvironmentContentType,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState
+  ) {
+    super(label, type, collapsibleState);
     this.tooltip = this.value;
     this.description = this.value;
   }
+}
 
-  contextValue = "environment";
+export class EnvironmentFile extends IEnvironmentTreeItem {
+  constructor(
+    public readonly name: string,
+    public readonly type: EnvironmentContentType,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState
+  ) {
+    super(name, type, collapsibleState);
+  }
 }
