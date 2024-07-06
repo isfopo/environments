@@ -1,6 +1,7 @@
 {
   "name": "environments",
   "displayName": "environments",
+  "publisher": "isfopo",
   "description": "",
   "version": "0.0.4",
   "engines": {
