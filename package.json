@@ -44,6 +44,7 @@
     "vscode:prepublish": "npm run package-web",
     "compile-web": "webpack",
     "watch-web": "webpack --mode development --watch",
+    "package-web": "webpack --mode production",
     "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
