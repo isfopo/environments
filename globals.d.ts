@@ -1,5 +1,3 @@
-/// <reference types="svelte" />
-
 import type * as vscode from "vscode";
 
 export type PostMessageTypes =
