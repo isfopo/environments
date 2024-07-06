@@ -53,8 +53,6 @@
     "@types/polka": "^0.5.7",
     "@types/vscode": "^1.91.0",
     "@types/webpack-env": "^1.18.5",
-    "@typescript-eslint/eslint-plugin": "^7.15.0",
-    "@typescript-eslint/parser": "^7.15.0",
     "@vscode/test-web": "^0.0.33",
     "assert": "^2.1.0",
     "eslint": "^9.6.0",
