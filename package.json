@@ -12,6 +12,25 @@
   ],
   "browser": "./dist/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "environments.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "assets/light/refresh.svg",
+          "dark": "assets/dark/refresh.svg"
+        }
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "environments.refresh",
+          "when": "view == environments-sidebar",
+          "group": "navigation"
+        }
+      ]
+    },
     "viewsWelcome": [
       {
         "view": "environments-sidebar-view",

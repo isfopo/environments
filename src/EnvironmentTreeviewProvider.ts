@@ -5,7 +5,16 @@ import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
 {
-  onDidChangeTreeData?: vscode.Event<vscode.TreeItem> | undefined;
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    vscode.TreeItem | undefined | void
+  > = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<
+    vscode.TreeItem | undefined | void
+  > = this._onDidChangeTreeData.event;
+
+  refresh() {
+    this._onDidChangeTreeData?.fire();
+  }
 
   getTreeItem(
     element: vscode.TreeItem
