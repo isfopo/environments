@@ -17,8 +17,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.commands.registerCommand(
     "environments.edit",
-    async ({ value: { value } }: EnvironmentKeyValueTreeItem) => {
-      const input = await vscode.window.showInputBox({ value });
+    async ({ key, value: { value } }: EnvironmentKeyValueTreeItem) => {
+      const input = await vscode.window.showInputBox({
+        value,
+        prompt: `Update the value for ${key}`,
+      });
       console.log(input);
     }
   );
