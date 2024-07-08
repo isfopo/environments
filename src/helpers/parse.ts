@@ -1,18 +1,39 @@
 import type { EnvironmentContent } from "../types";
 
-export const parseEnvironmentContent = (
-  content: string
-): EnvironmentContent => {
-  const lines = content.split("\n");
-  const data: EnvironmentContent = {};
+const LINE =
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/gm;
 
-  for (const line of lines) {
-    const [key, split] = line.split("=");
+export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
+  const obj: EnvironmentContent = {};
 
-    if (key && split) {
-      const [value, comment] = split.split("#");
-      data[key.trim()] = { value: value.trim(), type: "string" };
+  // Convert line breaks to same format
+  lines = lines.replace(/\r\n?/gm, "\n");
+
+  let match;
+  while ((match = LINE.exec(lines)) != null) {
+    const key = match[1];
+
+    // Default undefined or null to empty string
+    let value = match[2] || "";
+
+    // Remove whitespace
+    value = value.trim();
+
+    // Check if double quoted
+    const maybeQuote = value[0];
+
+    // Remove surrounding quotes
+    value = value.replace(/^(['"`])([\s\S]*)\1$/gm, "$2");
+
+    // Expand newlines if double quoted
+    if (maybeQuote === '"') {
+      value = value.replace(/\\n/g, "\n");
+      value = value.replace(/\\r/g, "\r");
     }
+
+    // Add to object
+    obj[key] = { value, type: "string" };
   }
-  return data;
+
+  return obj;
 };
