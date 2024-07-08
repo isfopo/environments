@@ -7,8 +7,10 @@ export const parseEnvironmentContent = (
   const data: EnvironmentContent = {};
 
   for (const line of lines) {
-    const [key, value] = line.split("=");
-    if (key && value) {
+    const [key, split] = line.split("=");
+
+    if (key && split) {
+      const [value, comment] = split.split("#");
       data[key.trim()] = { value: value.trim(), type: "string" };
     }
   }
