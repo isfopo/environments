@@ -37,3 +37,6 @@ export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
 
   return obj;
 };
+
+export const replace = (content: string, key: string, value: string): string =>
+  content.replace(new RegExp(`(${key}=)([^\\s"]*)`, "g"), `$1${value}`);

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { parseEnvironmentContent } from "./helpers/parse";
+import { parseEnvironmentContent, replace } from "./helpers/parse";
 import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
 
 export class EnvironmentTreeviewProvider
@@ -14,6 +14,19 @@ export class EnvironmentTreeviewProvider
 
   refresh() {
     this._onDidChangeTreeData?.fire();
+  }
+
+  async edit(element: EnvironmentKeyValueTreeItem, input: string) {
+    const content = new TextDecoder().decode(
+      await vscode.workspace.fs.readFile(element.parent.uri)
+    );
+
+    console.log(replace(content, element.key, input));
+
+    vscode.workspace.fs.writeFile(
+      element.parent.uri,
+      new TextEncoder().encode(replace(content, element.key, input))
+    );
   }
 
   getTreeItem(
@@ -44,7 +57,11 @@ export class EnvironmentTreeviewProvider
     return Promise.resolve(
       Object.keys(content).map(
         (key): EnvironmentKeyValueTreeItem =>
-          new EnvironmentKeyValueTreeItem(key, content[key])
+          new EnvironmentKeyValueTreeItem(
+            key,
+            content[key],
+            element as EnvironmentFileTreeItem
+          )
       )
     );
   }
@@ -100,6 +117,7 @@ export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {
   constructor(
     public readonly key: string,
     public readonly value: EnvironmentKeyValue,
+    public readonly parent: EnvironmentFileTreeItem,
     public readonly type: EnvironmentValueType = EnvironmentValueType.string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.None
