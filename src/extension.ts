@@ -11,6 +11,10 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand("environments.refresh", () =>
     treeDataProvider.refresh()
   );
+
+  vscode.commands.registerCommand("environments.edit", (element) =>
+    console.log("edit", element)
+  );
 }
 
 // this method is called when your extension is deactivated

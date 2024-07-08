@@ -20,6 +20,14 @@
           "light": "assets/light/refresh.svg",
           "dark": "assets/dark/refresh.svg"
         }
+      },
+      {
+        "command": "environments.edit",
+        "title": "Edit",
+        "icon": {
+          "light": "assets/light/edit.svg",
+          "dark": "assets/dark/edit.svg"
+        }
       }
     ],
     "menus": {
@@ -28,6 +36,13 @@
           "command": "environments.refresh",
           "when": "view == environments-sidebar",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "environments.edit",
+          "when": "view == environments-sidebar && viewItem == keyValue",
+          "group": "inline"
         }
       ]
     },

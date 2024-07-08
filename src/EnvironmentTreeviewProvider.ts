@@ -105,6 +105,7 @@ export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {
       .TreeItemCollapsibleState.None
   ) {
     super(key, collapsibleState);
+    this.contextValue = "keyValue";
     this.tooltip = this.value.value;
     this.description = this.value.value;
   }
@@ -119,6 +120,7 @@ export class EnvironmentFileTreeItem extends vscode.TreeItem {
       .TreeItemCollapsibleState.Collapsed
   ) {
     super(name, collapsibleState);
+    this.contextValue = "file";
     this.uri = uri;
     this.tooltip = this.uri.fsPath;
   }
