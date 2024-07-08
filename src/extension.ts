@@ -1,5 +1,8 @@
 import * as vscode from "vscode";
-import { EnvironmentTreeviewProvider } from "./EnvironmentTreeviewProvider";
+import {
+  EnvironmentKeyValueTreeItem,
+  EnvironmentTreeviewProvider,
+} from "./EnvironmentTreeviewProvider";
 
 export function activate(context: vscode.ExtensionContext) {
   // Register the Sidebar Panel
@@ -12,8 +15,12 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider.refresh()
   );
 
-  vscode.commands.registerCommand("environments.edit", (element) =>
-    console.log("edit", element)
+  vscode.commands.registerCommand(
+    "environments.edit",
+    async ({ value: { value } }: EnvironmentKeyValueTreeItem) => {
+      const input = await vscode.window.showInputBox({ value });
+      console.log(input);
+    }
   );
 }
 
