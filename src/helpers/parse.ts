@@ -1,4 +1,4 @@
-import type { EnvironmentContent } from "../types";
+import type { EnvironmentContent, EnvironmentKeyValueType } from "../types";
 
 const LINE =
   /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)/gm;
@@ -32,10 +32,31 @@ export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
     }
 
     // Add to object
-    obj[key] = { value, type: "string" };
+    obj[key] = { value, type: parseArg(match[3], "type") ?? "string" };
   }
 
   return obj;
+};
+
+export const parseArg = (
+  input: string | undefined,
+  key: string
+): EnvironmentKeyValueType | null => {
+  if (!input) return null;
+
+  // Create a regex that finds the key followed by a colon and captures the value
+  const regex = new RegExp(`${key}:([^\\s,]*)`, "i");
+
+  // Execute the regex on the input string
+  const match = input.match(regex);
+
+  // If a match is found, return the captured group (the value)
+  if (match && match[1]) {
+    return match[1] as EnvironmentKeyValueType;
+  }
+
+  // If no match is found, return null
+  return null;
 };
 
 export const replace = (content: string, key: string, value: string): string =>

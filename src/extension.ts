@@ -26,6 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
         return;
       }
 
+      console.log(element.value.type);
+
       treeDataProvider.edit(element, input);
     }
   );
