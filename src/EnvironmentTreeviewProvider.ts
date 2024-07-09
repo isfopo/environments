@@ -21,8 +21,6 @@ export class EnvironmentTreeviewProvider
       await vscode.workspace.fs.readFile(element.parent.uri)
     );
 
-    console.log(replace(content, element.key, input));
-
     vscode.workspace.fs.writeFile(
       element.parent.uri,
       new TextEncoder().encode(replace(content, element.key, input))
