@@ -33,16 +33,35 @@ export function activate(context: vscode.ExtensionContext) {
 
         quickPick.show();
       } else {
-        const input = await vscode.window.showInputBox({
-          value: element.value.value,
-          prompt: `Update the value for ${element.key}`,
-        });
+        if (element.value.options && element.value.options.length > 0) {
+          console.log("options", element.value.options);
+          const quickPick = vscode.window.createQuickPick();
+          quickPick.items = element.value.options.map((option) => ({
+            label: option,
+          }));
+          quickPick.onDidHide(() => quickPick.dispose());
+          quickPick.placeholder = `Update the value for ${element.key}`;
+          quickPick.onDidAccept(() => {
+            const selectedItem = quickPick.selectedItems[0];
+            if (selectedItem) {
+              treeDataProvider.edit(element, selectedItem.label);
+            }
+            quickPick.hide();
+          });
 
-        if (!input) {
-          return;
+          quickPick.show();
+        } else {
+          const input = await vscode.window.showInputBox({
+            value: element.value.value,
+            prompt: `Update the value for ${element.key}`,
+          });
+
+          if (!input) {
+            return;
+          }
+
+          treeDataProvider.edit(element, input);
         }
-
-        treeDataProvider.edit(element, input);
       }
     }
   );

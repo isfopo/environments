@@ -31,8 +31,14 @@ export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
       value = value.replace(/\\r/g, "\r");
     }
 
+    console.log(parseArg(match[3], "options"));
+
     // Add to object
-    obj[key] = { value, type: parseArg(match[3], "type") ?? "string" };
+    obj[key] = {
+      value,
+      type: parseArg(match[3], "type") ?? "string",
+      options: parseArg(match[3], "options")?.split(",") ?? [],
+    };
   }
 
   return obj;
@@ -45,7 +51,7 @@ export const parseArg = (
   if (!input) return null;
 
   // Create a regex that finds the key followed by a colon and captures the value
-  const regex = new RegExp(`${key}:([^\\s,]*)`, "i");
+  const regex = new RegExp(`${key}:([^\\s]*)`, "i");
 
   // Execute the regex on the input string
   const match = input.match(regex);
