@@ -5,4 +5,4 @@ export interface EnvironmentKeyValue {
   type: EnvironmentKeyValueType;
 }
 
-export type EnvironmentKeyValueType = "string" | "bool" | "number";
+export type EnvironmentKeyValueType = "string" | "bool";
