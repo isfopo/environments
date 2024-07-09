@@ -64,15 +64,6 @@ export class EnvironmentTreeviewProvider
     );
   }
 
-  resolveTreeItem?(
-    item: vscode.TreeItem,
-    element: vscode.TreeItem,
-    token: vscode.CancellationToken
-  ): vscode.ProviderResult<vscode.TreeItem> {
-    console.log("resolveTreeItem", item, element, token);
-    return item;
-  }
-
   private async getFileData(): Promise<EnvironmentFileTreeItem[]> {
     let fileData: EnvironmentFileTreeItem[] = [];
     for (const folder of vscode.workspace.workspaceFolders || []) {
