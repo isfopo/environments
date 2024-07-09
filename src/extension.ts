@@ -17,18 +17,33 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.commands.registerCommand(
     "environments.edit",
     async (element: EnvironmentKeyValueTreeItem) => {
-      const input = await vscode.window.showInputBox({
-        value: element.value.value,
-        prompt: `Update the value for ${element.key}`,
-      });
+      if (element.value.type === "bool") {
+        const quickPick = vscode.window.createQuickPick();
+        quickPick.items = [{ label: "true" }, { label: "false" }];
+        quickPick.onDidHide(() => quickPick.dispose());
 
-      if (!input) {
-        return;
+        quickPick.placeholder = `Update the value for ${element.key}`;
+        quickPick.onDidAccept(() => {
+          const selectedItem = quickPick.selectedItems[0];
+          if (selectedItem) {
+            treeDataProvider.edit(element, selectedItem.label);
+          }
+          quickPick.hide();
+        });
+
+        quickPick.show();
+      } else {
+        const input = await vscode.window.showInputBox({
+          value: element.value.value,
+          prompt: `Update the value for ${element.key}`,
+        });
+
+        if (!input) {
+          return;
+        }
+
+        treeDataProvider.edit(element, input);
       }
-
-      console.log(element.value.type);
-
-      treeDataProvider.edit(element, input);
     }
   );
 }
