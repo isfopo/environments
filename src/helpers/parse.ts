@@ -34,33 +34,30 @@ export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
     // Add to object
     obj[key] = {
       value,
-      type: parseArg(match[3], "type") ?? "string",
-      options: parseArg(match[3], "options")?.split(",") ?? [],
+      type: inferType(value),
+      options: parseOptions(match[3]),
     };
   }
 
   return obj;
 };
 
-export const parseArg = (
-  input: string | undefined,
-  key: string
-): EnvironmentKeyValueType | null => {
-  if (!input) return null;
+export const inferType = (value: string): EnvironmentKeyValueType => {
+  if (value === "true" || value === "false") {
+    return "bool";
+  } else {
+    return "string";
+  }
+};
 
+export const parseOptions = (input: string | undefined): string[] => {
   // Create a regex that finds the key followed by a colon and captures the value
-  const regex = new RegExp(`${key}:([^\\s]*)`, "i");
+  const regex = new RegExp(`options:([^\\s]*)`, "i");
 
   // Execute the regex on the input string
-  const match = input.match(regex);
+  const match = input?.match(regex);
 
-  // If a match is found, return the captured group (the value)
-  if (match && match[1]) {
-    return match[1] as EnvironmentKeyValueType;
-  }
-
-  // If no match is found, return null
-  return null;
+  return match?.[1].split(",") ?? [];
 };
 
 export const replace = (content: string, key: string, value: string): string =>
