@@ -10,6 +10,10 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider,
   });
 
+  vscode.window.createTreeView("environments-explorer", {
+    treeDataProvider,
+  });
+
   vscode.commands.registerCommand("environments.refresh", () =>
     treeDataProvider.refresh()
   );
