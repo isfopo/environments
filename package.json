@@ -76,11 +76,16 @@
     "views": {
       "environments-sidebar-view": [
         {
-          "type": "tree",
+          "id": "environments-explorer",
+          "name": "Environments",
+          "icon": "media/icon.svg"
+        }
+      ],
+      "explorer": [
+        {
           "id": "environments-sidebar",
           "name": "Environments",
-          "icon": "media/icon.svg",
-          "contextualTitle": "Environments"
+          "icon": "media/icon.svg"
         }
       ]
     }
