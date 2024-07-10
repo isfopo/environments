@@ -31,8 +31,6 @@ export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
       value = value.replace(/\\r/g, "\r");
     }
 
-    console.log(parseArg(match[3], "options"));
-
     // Add to object
     obj[key] = {
       value,
