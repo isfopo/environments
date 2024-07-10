@@ -74,20 +74,18 @@
       ]
     },
     "views": {
+      "environments-sidebar-view": [
+        {
+          "id": "environments-explorer",
+          "name": "Environments",
+          "icon": "media/icon.svg"
+        }
+      ],
       "explorer": [
         {
           "id": "environments-sidebar",
           "name": "Environments",
           "icon": "media/icon.svg"
-        }
-      ],
-      "environments-sidebar-view": [
-        {
-          "type": "tree",
-          "id": "environments-sidebar",
-          "name": "Environments",
-          "icon": "media/icon.svg",
-          "contextualTitle": "Environments"
         }
       ]
     }
