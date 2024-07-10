@@ -5,6 +5,10 @@ import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
 {
+  flip(element: EnvironmentKeyValueTreeItem) {
+    this.edit(element, element.value.value === "true" ? "false" : "true");
+    this.refresh();
+  }
   private _onDidChangeTreeData: vscode.EventEmitter<
     vscode.TreeItem | undefined | void
   > = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
@@ -107,12 +111,11 @@ export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {
     public readonly key: string,
     public readonly value: EnvironmentKeyValue,
     public readonly parent: EnvironmentFileTreeItem,
-    public readonly type: EnvironmentValueType = EnvironmentValueType.string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.None
   ) {
     super(key, collapsibleState);
-    this.contextValue = "keyValue";
+    this.contextValue = `keyValue-${this.value.type}`;
     this.tooltip = this.value.value;
     this.description = this.value.value;
   }

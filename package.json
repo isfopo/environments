@@ -36,6 +36,14 @@
           "light": "assets/light/edit.svg",
           "dark": "assets/dark/edit.svg"
         }
+      },
+      {
+        "command": "environments.flip",
+        "title": "Flip",
+        "icon": {
+          "light": "assets/light/boolean.svg",
+          "dark": "assets/dark/boolean.svg"
+        }
       }
     ],
     "menus": {
@@ -49,7 +57,12 @@
       "view/item/context": [
         {
           "command": "environments.edit",
-          "when": "view == environments-sidebar && viewItem == keyValue",
+          "when": "view == environments-sidebar && viewItem == keyValue-string",
+          "group": "inline"
+        },
+        {
+          "command": "environments.flip",
+          "when": "view == environments-sidebar && viewItem == keyValue-bool",
           "group": "inline"
         }
       ]

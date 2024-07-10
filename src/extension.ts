@@ -65,6 +65,15 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+
+  vscode.commands.registerCommand(
+    "environments.flip",
+    async (element: EnvironmentKeyValueTreeItem) => {
+      if (element.value.type === "bool") {
+        treeDataProvider.flip(element);
+      }
+    }
+  );
 }
 
 // this method is called when your extension is deactivated
