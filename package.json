@@ -41,19 +41,18 @@
       "view/title": [
         {
           "command": "environments.refresh",
-          "when": "view == environments-sidebar",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
           "command": "environments.edit",
-          "when": "view == environments-sidebar && viewItem == keyValue-string",
+          "when": "viewItem == keyValue-string",
           "group": "inline"
         },
         {
           "command": "environments.flip",
-          "when": "view == environments-sidebar && viewItem == keyValue-bool",
+          "when": "viewItem == keyValue-bool",
           "group": "inline"
         }
       ]
@@ -76,14 +75,14 @@
     "views": {
       "environments-sidebar-view": [
         {
-          "id": "environments-explorer",
+          "id": "environments-sidebar",
           "name": "Environments",
           "icon": "media/icon.svg"
         }
       ],
       "explorer": [
         {
-          "id": "environments-sidebar",
+          "id": "environments-explorer",
           "name": "Environments",
           "icon": "media/icon.svg"
         }
