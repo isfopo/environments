@@ -35,6 +35,11 @@
         "command": "environments.flip",
         "title": "Flip",
         "icon": "$(sync)"
+      },
+      {
+        "command": "environments.add",
+        "title": "Add",
+        "icon": "$(add)"
       }
     ],
     "menus": {
@@ -45,6 +50,11 @@
         }
       ],
       "view/item/context": [
+        {
+          "command": "environments.add",
+          "when": "viewItem == file",
+          "group": "inline"
+        },
         {
           "command": "environments.edit",
           "when": "viewItem == keyValue-string",

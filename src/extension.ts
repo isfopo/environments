@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import {
+  EnvironmentFileTreeItem,
   EnvironmentKeyValueTreeItem,
   EnvironmentTreeviewProvider,
 } from "./EnvironmentTreeviewProvider";
@@ -13,6 +14,34 @@ export function activate(context: vscode.ExtensionContext) {
   vscode.window.createTreeView("environments-explorer", {
     treeDataProvider,
   });
+
+  vscode.commands.registerCommand(
+    "environments.add",
+    async (element: EnvironmentFileTreeItem) => {
+      const key = await vscode.window.showInputBox({
+        prompt: "Enter the key for the new environment variable",
+      });
+
+      if (!key) {
+        return;
+      } else if (key.includes(" ")) {
+        vscode.window.showErrorMessage(
+          "Environment variable keys cannot contain spaces"
+        );
+        return;
+      }
+
+      const value = await vscode.window.showInputBox({
+        prompt: `Enter the value for ${key}`,
+      });
+
+      if (!value) {
+        return;
+      }
+
+      treeDataProvider.add(element, key, value);
+    }
+  );
 
   vscode.commands.registerCommand("environments.refresh", () =>
     treeDataProvider.refresh()
