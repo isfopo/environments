@@ -14,6 +14,10 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider,
   });
 
+  vscode.commands.registerCommand("environments.add", () =>
+    console.log("Add environment var")
+  );
+
   vscode.commands.registerCommand("environments.refresh", () =>
     treeDataProvider.refresh()
   );
