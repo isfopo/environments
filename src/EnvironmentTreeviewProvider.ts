@@ -146,5 +146,6 @@ export class EnvironmentFileTreeItem extends vscode.TreeItem {
     this.contextValue = "file";
     this.uri = uri;
     this.tooltip = this.uri.fsPath;
+    this.iconPath = vscode.ThemeIcon.File;
   }
 }
