@@ -101,9 +101,9 @@ export class EnvironmentTreeviewProvider
       );
 
       fileData = files.map(
-        (file, index) =>
+        ([path], index) =>
           new EnvironmentFileTreeItem(
-            file[0],
+            path,
             fileUris[index],
             parseEnvironmentContent(fileContentStrings[index])
           )
