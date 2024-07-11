@@ -24,6 +24,11 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (!key) {
         return;
+      } else if (key.includes(" ")) {
+        vscode.window.showErrorMessage(
+          "Environment variable keys cannot contain spaces"
+        );
+        return;
       }
 
       const value = await vscode.window.showInputBox({
