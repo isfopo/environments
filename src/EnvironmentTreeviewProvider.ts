@@ -101,9 +101,9 @@ export class EnvironmentTreeviewProvider
       );
 
       fileData = files.map(
-        (file, index) =>
+        ([path], index) =>
           new EnvironmentFileTreeItem(
-            file[0],
+            path,
             fileUris[index],
             parseEnvironmentContent(fileContentStrings[index])
           )
@@ -146,5 +146,6 @@ export class EnvironmentFileTreeItem extends vscode.TreeItem {
     this.contextValue = "file";
     this.uri = uri;
     this.tooltip = this.uri.fsPath;
+    this.iconPath = vscode.ThemeIcon.File;
   }
 }
