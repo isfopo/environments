@@ -10,7 +10,7 @@ export class EnvironmentTreeviewProvider
       await vscode.workspace.fs.readFile(element.uri)
     );
 
-    content = content + `\n${key}="${value}"`;
+    content += `${key}="${value}"\n`;
 
     vscode.workspace.fs.writeFile(
       element.uri,
