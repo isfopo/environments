@@ -5,6 +5,19 @@ import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
 {
+  async add(element: EnvironmentFileTreeItem, key: string, value: string) {
+    let content = new TextDecoder().decode(
+      await vscode.workspace.fs.readFile(element.uri)
+    );
+
+    content = content + `\n${key}=${value}`;
+
+    vscode.workspace.fs.writeFile(
+      element.uri,
+      new TextEncoder().encode(content)
+    );
+  }
+
   flip(element: EnvironmentKeyValueTreeItem) {
     this.edit(element, element.value.value === "true" ? "false" : "true");
     this.refresh();

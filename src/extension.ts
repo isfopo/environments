@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import {
+  EnvironmentFileTreeItem,
   EnvironmentKeyValueTreeItem,
   EnvironmentTreeviewProvider,
 } from "./EnvironmentTreeviewProvider";
@@ -14,8 +15,27 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider,
   });
 
-  vscode.commands.registerCommand("environments.add", () =>
-    console.log("Add environment var")
+  vscode.commands.registerCommand(
+    "environments.add",
+    async (element: EnvironmentFileTreeItem) => {
+      const key = await vscode.window.showInputBox({
+        prompt: "Enter the key for the new environment variable",
+      });
+
+      if (!key) {
+        return;
+      }
+
+      const value = await vscode.window.showInputBox({
+        prompt: `Enter the value for ${key}`,
+      });
+
+      if (!value) {
+        return;
+      }
+
+      treeDataProvider.add(element, key, value);
+    }
   );
 
   vscode.commands.registerCommand("environments.refresh", () =>
