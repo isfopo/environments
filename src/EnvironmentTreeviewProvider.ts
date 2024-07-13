@@ -20,7 +20,6 @@ export class EnvironmentTreeviewProvider
 
   flip(element: EnvironmentKeyValueTreeItem) {
     this.edit(element, element.value.value === "true" ? "false" : "true");
-    this.refresh();
   }
   private _onDidChangeTreeData: vscode.EventEmitter<
     vscode.TreeItem | undefined | void
@@ -42,6 +41,8 @@ export class EnvironmentTreeviewProvider
       element.parent.uri,
       new TextEncoder().encode(replace(content, element.key, input))
     );
+
+    this.refresh();
   }
 
   getTreeItem(
