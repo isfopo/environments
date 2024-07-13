@@ -6,13 +6,37 @@ import {
 } from "./EnvironmentTreeviewProvider";
 
 export function activate(context: vscode.ExtensionContext) {
-  const treeDataProvider = new EnvironmentTreeviewProvider();
+  const treeDataProvider = new EnvironmentTreeviewProvider(context);
   vscode.window.createTreeView("environments-sidebar", {
     treeDataProvider,
   });
 
   vscode.window.createTreeView("environments-explorer", {
     treeDataProvider,
+  });
+
+  vscode.commands.registerCommand("environments.create", async () => {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    let workplaceFolder: vscode.WorkspaceFolder | undefined;
+
+    if (!workspaceFolders || workspaceFolders.length == 0) {
+      vscode.window.showErrorMessage("No workspace folder is open");
+    } else if (workspaceFolders.length == 1) {
+      workplaceFolder = workspaceFolders[0];
+    } else {
+      workplaceFolder = await vscode.window.showQuickPick(
+        workspaceFolders.map((folder) => folder.uri) || []
+      );
+    }
+
+    const fileName = await vscode.window.showInputBox({
+      prompt: "Enter the name of the new environment file",
+      value: ".env",
+    });
+
+    if (fileName) {
+      treeDataProvider.create(fileName);
+    }
   });
 
   vscode.commands.registerCommand(
