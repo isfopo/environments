@@ -51,7 +51,8 @@
       "view/title": [
         {
           "command": "environments.refresh",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "view == environments-sidebar || view == environments-explorer"
         },
         {
           "command": "environments.create",
