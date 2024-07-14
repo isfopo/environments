@@ -7,6 +7,14 @@ export class EnvironmentTreeviewProvider
 {
   context: vscode.ExtensionContext;
 
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    vscode.TreeItem | undefined | void
+  > = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
+
+  readonly onDidChangeTreeData: vscode.Event<
+    vscode.TreeItem | undefined | void
+  > = this._onDidChangeTreeData.event;
+
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
   }
@@ -20,7 +28,7 @@ export class EnvironmentTreeviewProvider
       treeDataProvider: this,
     });
 
-    tree.onDidChangeSelection(async (e) => {
+    tree.onDidChangeSelection(async (e): Promise<void> => {
       const selected = e.selection[0];
       if (selected instanceof EnvironmentKeyValueTreeItem) {
         await vscode.window.showTextDocument(
@@ -62,12 +70,6 @@ export class EnvironmentTreeviewProvider
   flip(element: EnvironmentKeyValueTreeItem) {
     this.edit(element, element.value.value === "true" ? "false" : "true");
   }
-  private _onDidChangeTreeData: vscode.EventEmitter<
-    vscode.TreeItem | undefined | void
-  > = new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
-  readonly onDidChangeTreeData: vscode.Event<
-    vscode.TreeItem | undefined | void
-  > = this._onDidChangeTreeData.event;
 
   refresh() {
     this._onDidChangeTreeData?.fire();
