@@ -17,15 +17,15 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.commands.registerCommand("environments.create", async () => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
-    let workplaceFolder: vscode.WorkspaceFolder | undefined;
+    let workplaceFolder: string | undefined;
 
     if (!workspaceFolders || workspaceFolders.length == 0) {
       vscode.window.showErrorMessage("No workspace folder is open");
     } else if (workspaceFolders.length == 1) {
-      workplaceFolder = workspaceFolders[0];
+      workplaceFolder = workspaceFolders[0].uri.fsPath;
     } else {
       workplaceFolder = await vscode.window.showQuickPick(
-        workspaceFolders.map((folder) => folder.uri) || []
+        workspaceFolders.map((folder) => folder.uri.fsPath) || []
       );
     }
 
@@ -34,8 +34,8 @@ export function activate(context: vscode.ExtensionContext) {
       value: ".env",
     });
 
-    if (fileName) {
-      treeDataProvider.create(fileName);
+    if (workplaceFolder && fileName) {
+      treeDataProvider.create(workplaceFolder, fileName);
     }
   });
 

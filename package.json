@@ -50,12 +50,12 @@
     "menus": {
       "view/title": [
         {
-          "command": "environments.create",
+          "command": "environments.refresh",
           "group": "navigation"
         },
         {
-          "command": "environments.refresh",
-          "group": "navigation"
+          "command": "environments.create",
+          "group": "context"
         }
       ],
       "view/item/context": [

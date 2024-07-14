@@ -11,8 +11,18 @@ export class EnvironmentTreeviewProvider
     this.context = context;
   }
 
-  create(fileName: string) {
-    vscode.workspace.fs.writeFile(this.context., [])
+  create(workspace: string, fileName: string) {
+    vscode.workspace.fs.writeFile(
+      vscode.Uri.joinPath(
+        vscode.Uri.from({
+          path: workspace,
+          scheme: "file",
+        }),
+        fileName
+      ),
+      new Uint8Array()
+    );
+    this.refresh();
   }
 
   async add(element: EnvironmentFileTreeItem, key: string, value: string) {
