@@ -85,8 +85,12 @@
     },
     "viewsWelcome": [
       {
-        "view": "environments-sidebar-view",
-        "contents": "No .env files found."
+        "view": "environments-sidebar",
+        "contents": "No environment files found. \n[Create file](command:environments.create)"
+      },
+      {
+        "view": "environments-explorer",
+        "contents": "No environment files found. \n[Create file](command:environments.create)"
       }
     ],
     "viewsContainers": {
