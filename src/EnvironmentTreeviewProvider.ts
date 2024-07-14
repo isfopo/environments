@@ -40,6 +40,7 @@ export class EnvironmentTreeviewProvider
       });
     }
 
+    // Listen to file changes
     vscode.workspace.onDidChangeTextDocument((e) => {
       if (e.document.uri.path.includes(".env")) {
         this.refresh();
