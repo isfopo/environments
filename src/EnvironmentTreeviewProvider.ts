@@ -40,6 +40,41 @@ export class EnvironmentTreeviewProvider
       });
     }
 
+    vscode.workspace.onDidChangeTextDocument((e) => {
+      if (e.document.uri.path.includes(".env")) {
+        this.refresh();
+      }
+    });
+
+    // Listen to file creation
+    vscode.workspace.onDidCreateFiles((event) => {
+      for (const file of event.files) {
+        if (file.path.includes(".env")) {
+          this.refresh();
+        }
+      }
+    });
+
+    // Listen to file deletion
+    vscode.workspace.onDidDeleteFiles((event) => {
+      for (const file of event.files) {
+        if (file.path.includes(".env")) {
+          this.refresh();
+        }
+      }
+    });
+
+    // Listen to file renaming
+    vscode.workspace.onDidRenameFiles((event) => {
+      for (const file of event.files) {
+        if (
+          file.newUri.path.includes(".env") ||
+          file.oldUri.path.includes(".env")
+        ) {
+          this.refresh();
+        }
+      }
+    });
     return this;
   }
 
