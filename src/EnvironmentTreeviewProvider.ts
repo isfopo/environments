@@ -40,8 +40,8 @@ export class EnvironmentTreeviewProvider
     return this;
   }
 
-  create(workspace: string, fileName: string) {
-    vscode.workspace.fs.writeFile(
+  async create(workspace: string, fileName: string) {
+    await vscode.workspace.fs.writeFile(
       vscode.Uri.joinPath(
         vscode.Uri.from({
           path: workspace,
@@ -61,10 +61,12 @@ export class EnvironmentTreeviewProvider
 
     content += `${key}="${value}"\n`;
 
-    vscode.workspace.fs.writeFile(
+    await vscode.workspace.fs.writeFile(
       element.uri,
       new TextEncoder().encode(content)
     );
+
+    this.refresh();
   }
 
   flip(element: EnvironmentKeyValueTreeItem) {
@@ -80,7 +82,7 @@ export class EnvironmentTreeviewProvider
       await vscode.workspace.fs.readFile(element.parent.uri)
     );
 
-    vscode.workspace.fs.writeFile(
+    await vscode.workspace.fs.writeFile(
       element.parent.uri,
       new TextEncoder().encode(replace(content, element.key, input))
     );
