@@ -22,6 +22,11 @@
   "contributes": {
     "commands": [
       {
+        "command": "environments.create",
+        "title": "Create",
+        "icon": "$(add)"
+      },
+      {
         "command": "environments.refresh",
         "title": "Refresh",
         "icon": "$(refresh)"
@@ -47,6 +52,10 @@
         {
           "command": "environments.refresh",
           "group": "navigation"
+        },
+        {
+          "command": "environments.create",
+          "group": "context"
         }
       ],
       "view/item/context": [

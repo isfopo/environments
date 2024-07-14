@@ -5,6 +5,26 @@ import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
 {
+  context: vscode.ExtensionContext;
+
+  constructor(context: vscode.ExtensionContext) {
+    this.context = context;
+  }
+
+  create(workspace: string, fileName: string) {
+    vscode.workspace.fs.writeFile(
+      vscode.Uri.joinPath(
+        vscode.Uri.from({
+          path: workspace,
+          scheme: "file",
+        }),
+        fileName
+      ),
+      new Uint8Array()
+    );
+    this.refresh();
+  }
+
   async add(element: EnvironmentFileTreeItem, key: string, value: string) {
     let content = new TextDecoder().decode(
       await vscode.workspace.fs.readFile(element.uri)
