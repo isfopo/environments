@@ -140,6 +140,20 @@ export enum EnvironmentValueType {
   bool = "bool",
 }
 
+export class EnvironmentWorkspaceFoldersTreeItem extends vscode.TreeItem {
+  constructor(
+    public readonly name: string,
+    public readonly uri: vscode.Uri,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
+      .TreeItemCollapsibleState.Collapsed
+  ) {
+    super(name, collapsibleState);
+    this.contextValue = "workspace";
+    this.tooltip = this.uri.fsPath;
+    this.iconPath = vscode.ThemeIcon.Folder;
+  }
+}
+
 export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {
   constructor(
     public readonly key: string,
