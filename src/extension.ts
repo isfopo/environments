@@ -7,14 +7,7 @@ import {
 } from "./EnvironmentTreeviewProvider";
 
 export function activate(context: vscode.ExtensionContext) {
-  const treeDataProvider = new EnvironmentTreeviewProvider(context);
-  vscode.window.createTreeView("environments-sidebar", {
-    treeDataProvider,
-  });
-
-  vscode.window.createTreeView("environments-explorer", {
-    treeDataProvider,
-  });
+  const treeDataProvider = new EnvironmentTreeviewProvider(context).register();
 
   vscode.commands.registerCommand(
     "environments.create",
