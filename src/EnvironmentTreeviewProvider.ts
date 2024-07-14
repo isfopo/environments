@@ -85,9 +85,13 @@ export class EnvironmentTreeviewProvider
     }
 
     if (!element) {
-      return vscode.workspace.workspaceFolders.map(
-        (folder) => new EnvironmentWorkspaceFolderTreeItem(folder)
-      );
+      if (vscode.workspace.workspaceFolders.length > 1) {
+        return vscode.workspace.workspaceFolders.map(
+          (folder) => new EnvironmentWorkspaceFolderTreeItem(folder)
+        );
+      } else {
+        return this.getFileData(vscode.workspace.workspaceFolders[0]);
+      }
     } else if (element instanceof EnvironmentWorkspaceFolderTreeItem) {
       return this.getFileData(element.folder);
     } else if (element instanceof EnvironmentFileTreeItem) {
