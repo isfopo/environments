@@ -3,7 +3,7 @@
   "displayName": "Environments",
   "publisher": "isfopo",
   "description": "",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.91.0"
