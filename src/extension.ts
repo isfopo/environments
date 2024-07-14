@@ -3,6 +3,7 @@ import {
   EnvironmentFileTreeItem,
   EnvironmentKeyValueTreeItem,
   EnvironmentTreeviewProvider,
+  EnvironmentWorkspaceFolderTreeItem,
 } from "./EnvironmentTreeviewProvider";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -15,29 +16,37 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider,
   });
 
-  vscode.commands.registerCommand("environments.create", async () => {
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    let workplaceFolder: string | undefined;
+  vscode.commands.registerCommand(
+    "environments.create",
+    async (element: EnvironmentWorkspaceFolderTreeItem) => {
+      const { workspaceFolders } = vscode.workspace;
+      let workplaceFolder: string | undefined;
 
-    if (!workspaceFolders || workspaceFolders.length == 0) {
-      vscode.window.showErrorMessage("No workspace folder is open");
-    } else if (workspaceFolders.length == 1) {
-      workplaceFolder = workspaceFolders[0].uri.fsPath;
-    } else {
-      workplaceFolder = await vscode.window.showQuickPick(
-        workspaceFolders.map((folder) => folder.uri.fsPath) || []
-      );
+      if (!workspaceFolders || workspaceFolders.length == 0) {
+        vscode.window.showErrorMessage("No workspace folder is open");
+      } else if (element) {
+        workplaceFolder = element.folder.uri.fsPath;
+      } else if (workspaceFolders.length == 1) {
+        workplaceFolder = workspaceFolders[0].uri.fsPath;
+      } else {
+        workplaceFolder = await vscode.window.showQuickPick(
+          workspaceFolders.map((folder) => folder.uri.fsPath),
+          {
+            placeHolder: "Select a workspace folder",
+          }
+        );
+      }
+
+      const fileName = await vscode.window.showInputBox({
+        prompt: "Enter the name of the new environment file",
+        value: ".env",
+      });
+
+      if (workplaceFolder && fileName) {
+        treeDataProvider.create(workplaceFolder, fileName);
+      }
     }
-
-    const fileName = await vscode.window.showInputBox({
-      prompt: "Enter the name of the new environment file",
-      value: ".env",
-    });
-
-    if (workplaceFolder && fileName) {
-      treeDataProvider.create(workplaceFolder, fileName);
-    }
-  });
+  );
 
   vscode.commands.registerCommand(
     "environments.add",

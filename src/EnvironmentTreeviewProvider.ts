@@ -85,59 +85,71 @@ export class EnvironmentTreeviewProvider
     }
 
     if (!element) {
-      return this.getFileData();
+      if (vscode.workspace.workspaceFolders.length > 1) {
+        return vscode.workspace.workspaceFolders.map(
+          (folder) => new EnvironmentWorkspaceFolderTreeItem(folder)
+        );
+      } else {
+        return this.getFileData(vscode.workspace.workspaceFolders[0]);
+      }
+    } else if (element instanceof EnvironmentWorkspaceFolderTreeItem) {
+      return this.getFileData(element.folder);
+    } else if (element instanceof EnvironmentFileTreeItem) {
+      return Promise.resolve(
+        Object.keys(element.content).map(
+          (key): EnvironmentKeyValueTreeItem =>
+            new EnvironmentKeyValueTreeItem(key, element.content[key], element)
+        )
+      );
     }
-
-    const { content } = element as EnvironmentFileTreeItem;
-
-    return Promise.resolve(
-      Object.keys(content).map(
-        (key): EnvironmentKeyValueTreeItem =>
-          new EnvironmentKeyValueTreeItem(
-            key,
-            content[key],
-            element as EnvironmentFileTreeItem
-          )
-      )
-    );
   }
 
-  private async getFileData(): Promise<EnvironmentFileTreeItem[]> {
-    let fileData: EnvironmentFileTreeItem[] = [];
-    for (const folder of vscode.workspace.workspaceFolders || []) {
-      const files = (
-        await vscode.workspace.fs.readDirectory(folder.uri)
-      ).filter((file) => file[0].startsWith(".env"));
+  private async getFileData(
+    folder: vscode.WorkspaceFolder
+  ): Promise<EnvironmentFileTreeItem[]> {
+    const files = (await vscode.workspace.fs.readDirectory(folder.uri)).filter(
+      (file) => file[0].startsWith(".env")
+    );
 
-      const fileUris = files.map((file) =>
-        vscode.Uri.joinPath(folder.uri, file[0])
-      );
+    const fileUris = files.map((file) =>
+      vscode.Uri.joinPath(folder.uri, file[0])
+    );
 
-      const fileContents = await Promise.all(
-        fileUris.map((uri) => vscode.workspace.fs.readFile(uri))
-      );
+    const fileContents = await Promise.all(
+      fileUris.map((uri) => vscode.workspace.fs.readFile(uri))
+    );
 
-      const fileContentStrings = fileContents.map((content) =>
-        new TextDecoder().decode(content)
-      );
+    const fileContentStrings = fileContents.map((content) =>
+      new TextDecoder().decode(content)
+    );
 
-      fileData = files.map(
-        ([path], index) =>
-          new EnvironmentFileTreeItem(
-            path,
-            fileUris[index],
-            parseEnvironmentContent(fileContentStrings[index])
-          )
-      );
-    }
-
-    return fileData;
+    return files.map(
+      ([path], index) =>
+        new EnvironmentFileTreeItem(
+          path,
+          fileUris[index],
+          parseEnvironmentContent(fileContentStrings[index])
+        )
+    );
   }
 }
 
 export enum EnvironmentValueType {
   string = "string",
   bool = "bool",
+}
+
+export class EnvironmentWorkspaceFolderTreeItem extends vscode.TreeItem {
+  constructor(
+    public readonly folder: vscode.WorkspaceFolder,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
+      .TreeItemCollapsibleState.Collapsed
+  ) {
+    super(folder.name, collapsibleState);
+    this.contextValue = "workspaceFolder";
+    this.tooltip = this.folder.uri.fsPath;
+    this.iconPath = vscode.ThemeIcon.Folder;
+  }
 }
 
 export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {

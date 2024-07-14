@@ -60,6 +60,11 @@
       ],
       "view/item/context": [
         {
+          "command": "environments.create",
+          "when": "viewItem == workspaceFolder",
+          "group": "inline"
+        },
+        {
           "command": "environments.add",
           "when": "viewItem == file",
           "group": "inline"
