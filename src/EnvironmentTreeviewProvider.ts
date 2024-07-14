@@ -146,7 +146,7 @@ export class EnvironmentWorkspaceFolderTreeItem extends vscode.TreeItem {
       .TreeItemCollapsibleState.Collapsed
   ) {
     super(folder.name, collapsibleState);
-    this.contextValue = "workspace";
+    this.contextValue = "workspaceFolder";
     this.tooltip = this.folder.uri.fsPath;
     this.iconPath = vscode.ThemeIcon.Folder;
   }
