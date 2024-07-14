@@ -20,22 +20,25 @@ export class EnvironmentTreeviewProvider
   }
 
   register() {
-    vscode.window.createTreeView("environments-sidebar", {
-      treeDataProvider: this,
-    });
+    const trees = [
+      vscode.window.createTreeView("environments-sidebar", {
+        treeDataProvider: this,
+      }),
+      vscode.window.createTreeView("environments-explorer", {
+        treeDataProvider: this,
+      }),
+    ];
 
-    const tree = vscode.window.createTreeView("environments-explorer", {
-      treeDataProvider: this,
-    });
-
-    tree.onDidChangeSelection(async (e): Promise<void> => {
-      const selected = e.selection[0];
-      if (selected instanceof EnvironmentKeyValueTreeItem) {
-        await vscode.window.showTextDocument(
-          await vscode.workspace.openTextDocument(selected.parent.uri)
-        );
-      }
-    });
+    for (const tree of trees) {
+      tree.onDidChangeSelection(async (e): Promise<void> => {
+        const selected = e.selection[0];
+        if (selected instanceof EnvironmentKeyValueTreeItem) {
+          await vscode.window.showTextDocument(
+            await vscode.workspace.openTextDocument(selected.parent.uri)
+          );
+        }
+      });
+    }
 
     return this;
   }
