@@ -25,7 +25,10 @@ export function activate(context: vscode.ExtensionContext) {
       workplaceFolder = workspaceFolders[0].uri.fsPath;
     } else {
       workplaceFolder = await vscode.window.showQuickPick(
-        workspaceFolders.map((folder) => folder.uri.fsPath) || []
+        workspaceFolders.map((folder) => folder.uri.fsPath),
+        {
+          placeHolder: "Select a workspace folder",
+        }
       );
     }
 
