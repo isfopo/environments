@@ -56,7 +56,8 @@
         },
         {
           "command": "environments.create",
-          "group": "context"
+          "group": "context",
+          "when": "view == environments-sidebar || view == environments-explorer"
         }
       ],
       "view/item/context": [
