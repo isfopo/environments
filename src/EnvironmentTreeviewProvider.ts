@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import { parseEnvironmentContent, replace } from "./helpers/parse";
-import type { EnvironmentContent, EnvironmentKeyValue } from "./types";
+import { EnvironmentWorkspaceFolderTreeItem } from "./classes/TreeItems/EnvironmentWorkspaceFolderTreeItem";
+import { EnvironmentKeyValueTreeItem } from "./classes/TreeItems/EnvironmentKeyValueTreeItem";
+import { EnvironmentFileTreeItem } from "./classes/TreeItems/EnvironmentFileTreeItem";
 
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
@@ -40,6 +42,42 @@ export class EnvironmentTreeviewProvider
       });
     }
 
+    // Listen to file changes
+    vscode.workspace.onDidChangeTextDocument((e) => {
+      if (e.document.uri.path.includes(".env")) {
+        this.refresh();
+      }
+    });
+
+    // Listen to file creation
+    vscode.workspace.onDidCreateFiles((event) => {
+      for (const file of event.files) {
+        if (file.path.includes(".env")) {
+          this.refresh();
+        }
+      }
+    });
+
+    // Listen to file deletion
+    vscode.workspace.onDidDeleteFiles((event) => {
+      for (const file of event.files) {
+        if (file.path.includes(".env")) {
+          this.refresh();
+        }
+      }
+    });
+
+    // Listen to file renaming
+    vscode.workspace.onDidRenameFiles((event) => {
+      for (const file of event.files) {
+        if (
+          file.newUri.path.includes(".env") ||
+          file.oldUri.path.includes(".env")
+        ) {
+          this.refresh();
+        }
+      }
+    });
     return this;
   }
 
@@ -159,54 +197,5 @@ export class EnvironmentTreeviewProvider
           parseEnvironmentContent(fileContentStrings[index])
         )
     );
-  }
-}
-
-export enum EnvironmentValueType {
-  string = "string",
-  bool = "bool",
-}
-
-export class EnvironmentWorkspaceFolderTreeItem extends vscode.TreeItem {
-  constructor(
-    public readonly folder: vscode.WorkspaceFolder,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
-      .TreeItemCollapsibleState.Collapsed
-  ) {
-    super(folder.name, collapsibleState);
-    this.contextValue = "workspaceFolder";
-    this.tooltip = this.folder.uri.fsPath;
-    this.iconPath = vscode.ThemeIcon.Folder;
-  }
-}
-
-export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {
-  constructor(
-    public readonly key: string,
-    public readonly value: EnvironmentKeyValue,
-    public readonly parent: EnvironmentFileTreeItem,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
-      .TreeItemCollapsibleState.None
-  ) {
-    super(key, collapsibleState);
-    this.contextValue = `keyValue-${this.value.type}`;
-    this.tooltip = this.value.value;
-    this.description = this.value.value;
-  }
-}
-
-export class EnvironmentFileTreeItem extends vscode.TreeItem {
-  constructor(
-    public readonly name: string,
-    public readonly uri: vscode.Uri,
-    public readonly content: EnvironmentContent,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
-      .TreeItemCollapsibleState.Collapsed
-  ) {
-    super(name, collapsibleState);
-    this.contextValue = "file";
-    this.uri = uri;
-    this.tooltip = this.uri.fsPath;
-    this.iconPath = vscode.ThemeIcon.File;
   }
 }

@@ -1,10 +1,8 @@
 import * as vscode from "vscode";
-import {
-  EnvironmentFileTreeItem,
-  EnvironmentKeyValueTreeItem,
-  EnvironmentTreeviewProvider,
-  EnvironmentWorkspaceFolderTreeItem,
-} from "./EnvironmentTreeviewProvider";
+import { EnvironmentTreeviewProvider } from "./EnvironmentTreeviewProvider";
+import { EnvironmentWorkspaceFolderTreeItem } from "./classes/TreeItems/EnvironmentWorkspaceFolderTreeItem";
+import { EnvironmentFileTreeItem } from "./classes/TreeItems/EnvironmentFileTreeItem";
+import { EnvironmentKeyValueTreeItem } from "./classes/TreeItems/EnvironmentKeyValueTreeItem";
 
 export function activate(context: vscode.ExtensionContext) {
   const treeDataProvider = new EnvironmentTreeviewProvider(context).register();
