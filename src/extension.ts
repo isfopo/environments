@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   vscode.commands.registerCommand("environments.create", async () => {
-    const workspaceFolders = vscode.workspace.workspaceFolders;
+    const { workspaceFolders } = vscode.workspace;
     let workplaceFolder: string | undefined;
 
     if (!workspaceFolders || workspaceFolders.length == 0) {
