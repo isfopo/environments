@@ -131,6 +131,42 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+
+  vscode.commands.registerCommand(
+    "environments.rename",
+    async (element: EnvironmentFileTreeItem) => {
+      const newFile = await vscode.window.showInputBox({
+        prompt: "Enter the new name for the environment file",
+        value: element.name,
+      });
+
+      if (!newFile) {
+        return;
+      }
+
+      try {
+        await vscode.workspace.fs.rename(
+          element.uri,
+          vscode.Uri.joinPath(
+            element.uri.with({
+              path: element.uri.path.substring(
+                0,
+                element.uri.path.lastIndexOf("/")
+              ),
+            }),
+            newFile
+          )
+        );
+
+        treeDataProvider.refresh();
+        vscode.window.showInformationMessage(`File renamed to ${newFile}`);
+      } catch (error: any) {
+        vscode.window.showErrorMessage(
+          `Failed to rename file: ${error.message}`
+        );
+      }
+    }
+  );
 }
 
 // this method is called when your extension is deactivated
