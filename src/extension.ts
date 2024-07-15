@@ -147,15 +147,7 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         await vscode.workspace.fs.rename(
           element.uri,
-          vscode.Uri.joinPath(
-            element.uri.with({
-              path: element.uri.path.substring(
-                0,
-                element.uri.path.lastIndexOf("/")
-              ),
-            }),
-            newFile
-          )
+          vscode.Uri.joinPath(element.getDir(), newFile)
         );
 
         treeDataProvider.refresh();
@@ -163,6 +155,36 @@ export function activate(context: vscode.ExtensionContext) {
       } catch (error: any) {
         vscode.window.showErrorMessage(
           `Failed to rename file: ${error.message}`
+        );
+      }
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "environments.duplicate",
+    async (element: EnvironmentFileTreeItem) => {
+      const newFileName = await vscode.window.showInputBox({
+        prompt: "Enter the name for the duplicated environment file",
+        value: `${element.name}.copy`,
+      });
+
+      if (!newFileName) {
+        return;
+      }
+
+      try {
+        await vscode.workspace.fs.writeFile(
+          vscode.Uri.joinPath(element.getDir(), newFileName),
+          await vscode.workspace.fs.readFile(element.uri)
+        );
+
+        treeDataProvider.refresh();
+        vscode.window.showInformationMessage(
+          `File duplicated as ${newFileName}`
+        );
+      } catch (error: any) {
+        vscode.window.showErrorMessage(
+          `Failed to duplicate file: ${error.message}`
         );
       }
     }

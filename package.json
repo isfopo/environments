@@ -49,6 +49,10 @@
       {
         "command": "environments.rename",
         "title": "Rename"
+      },
+      {
+        "command": "environments.duplicate",
+        "title": "Duplicate"
       }
     ],
     "menus": {
@@ -77,6 +81,10 @@
         },
         {
           "command": "environments.rename",
+          "when": "viewItem == file"
+        },
+        {
+          "command": "environments.duplicate",
           "when": "viewItem == file"
         },
         {
