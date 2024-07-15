@@ -5,6 +5,7 @@
   "description": "Manage your environments from your sidebar.",
   "version": "0.0.29",
   "icon": "assets/icon.png",
+  "type": "module",
   "engines": {
     "vscode": "^1.91.0"
   },
