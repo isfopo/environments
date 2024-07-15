@@ -91,7 +91,6 @@ export function activate(context: vscode.ExtensionContext) {
         quickPick.show();
       } else {
         if (element.value.options && element.value.options.length > 0) {
-          console.log("options", element.value.options);
           const quickPick = vscode.window.createQuickPick();
           quickPick.items = element.value.options.map((option) => ({
             label: option,
