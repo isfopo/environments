@@ -147,15 +147,7 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         await vscode.workspace.fs.rename(
           element.uri,
-          vscode.Uri.joinPath(
-            element.uri.with({
-              path: element.uri.path.substring(
-                0,
-                element.uri.path.lastIndexOf("/")
-              ),
-            }),
-            newFile
-          )
+          vscode.Uri.joinPath(element.getDir(), newFile)
         );
 
         treeDataProvider.refresh();
@@ -181,18 +173,10 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       try {
-        const newFileUri = vscode.Uri.joinPath(
-          element.uri.with({
-            path: element.uri.path.substring(
-              0,
-              element.uri.path.lastIndexOf("/")
-            ),
-          }),
-          newFileName
+        await vscode.workspace.fs.writeFile(
+          vscode.Uri.joinPath(element.getDir(), newFileName),
+          await vscode.workspace.fs.readFile(element.uri)
         );
-
-        const content = await vscode.workspace.fs.readFile(element.uri);
-        await vscode.workspace.fs.writeFile(newFileUri, content);
 
         treeDataProvider.refresh();
         vscode.window.showInformationMessage(

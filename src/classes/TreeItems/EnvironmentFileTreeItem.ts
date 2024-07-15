@@ -15,4 +15,12 @@ export class EnvironmentFileTreeItem extends vscode.TreeItem {
     this.tooltip = this.uri.fsPath;
     this.iconPath = vscode.ThemeIcon.File;
   }
+
+  getDir(): vscode.Uri {
+    return vscode.Uri.joinPath(
+      this.uri.with({
+        path: this.uri.path.substring(0, this.uri.path.lastIndexOf("/")),
+      })
+    );
+  }
 }
