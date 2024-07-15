@@ -152,18 +152,13 @@
     "@types/node": "^20.14.10",
     "@types/polka": "^0.5.7",
     "@types/vscode": "^1.91.0",
-    "@types/webpack-env": "^1.18.5",
     "@vscode/test-web": "^0.0.33",
     "assert": "^2.1.0",
     "eslint": "^9.6.0",
     "glob": "^7.2.3",
     "mocha": "^10.6.0",
-    "process": "^0.11.10",
-    "ts-loader": "^9.5.1",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
-    "vscode-test": "^1.6.1",
-    "webpack": "^5.92.1",
-    "webpack-cli": "^5.1.4"
+    "vscode-test": "^1.6.1"
   }
 }
