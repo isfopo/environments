@@ -14,11 +14,6 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ["vscode"],
-      output: {
-        globals: {
-          vscode: "commonjs vscode",
-        },
-      },
     },
   },
   optimizeDeps: {
