@@ -9,7 +9,6 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, "src/extension.ts"),
-      formats: ["cjs"],
       name: "extension",
       fileName: () => "extension.js",
     },
@@ -20,11 +19,6 @@ export default defineConfig({
           vscode: "commonjs vscode",
         },
       },
-    },
-  },
-  resolve: {
-    alias: {
-      // Provide any necessary aliases here
     },
   },
   optimizeDeps: {
