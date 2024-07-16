@@ -27,8 +27,7 @@ export const parseEnvironmentContent = (
         // Group start
         currentGroup = new EnvironmentGroupTreeItem(
           match[4].split(" ")[1],
-          [],
-          []
+          parsePresets(match[4])
         );
         items.push(currentGroup);
       }
@@ -86,6 +85,16 @@ export const inferType = (value: string): EnvironmentKeyValueType => {
 export const parseOptions = (input: string | undefined): string[] => {
   // Create a regex that finds the key followed by a colon and captures the value
   const regex = new RegExp(`options:([^\\s]*)`, "i");
+
+  // Execute the regex on the input string
+  const match = input?.match(regex);
+
+  return match?.[1].split(",") ?? [];
+};
+
+export const parsePresets = (input: string | undefined): string[] => {
+  // Create a regex that finds the key followed by a colon and captures the value
+  const regex = new RegExp(`presets:([^\\s]*)`, "i");
 
   // Execute the regex on the input string
   const match = input?.match(regex);
