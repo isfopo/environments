@@ -1,45 +1,78 @@
+import * as vscode from "vscode";
+import { EnvironmentGroupTreeItem } from "../classes/TreeItems/EnvironmentGroupTreeItem";
+import { EnvironmentKeyValueTreeItem } from "../classes/TreeItems/EnvironmentKeyValueTreeItem";
 import type { EnvironmentContent, EnvironmentKeyValueType } from "../types";
 
 const LINE =
-  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)/gm;
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(###.*)$/gm;
 
-export const parseEnvironmentContent = (lines: string): EnvironmentContent => {
-  const obj: EnvironmentContent = {};
+export const parseEnvironmentContent = (
+  lines: string,
+  file: vscode.Uri
+): EnvironmentContent => {
+  const items: (EnvironmentKeyValueTreeItem | EnvironmentGroupTreeItem)[] = [];
+  let currentGroup: EnvironmentGroupTreeItem | null = null;
 
   // Convert line breaks to same format
   lines = lines.replace(/\r\n?/gm, "\n");
 
   let match;
   while ((match = LINE.exec(lines)) != null) {
-    const key = match[1];
+    if (match[4]) {
+      if (currentGroup && match[4].trim().endsWith("###")) {
+        // Group end
+        items.push(currentGroup);
+        currentGroup = null;
+      } else {
+        // Group start
+        currentGroup = new EnvironmentGroupTreeItem(
+          match[4].split(" ")[1],
+          [],
+          []
+        );
+        items.push(currentGroup);
+      }
+    } else {
+      const key = match[1];
 
-    // Default undefined or null to empty string
-    let value = match[2] || "";
+      // Default undefined or null to empty string
+      let value = match[2] || "";
 
-    // Remove whitespace
-    value = value.trim();
+      // Remove whitespace
+      value = value.trim();
 
-    // Check if double quoted
-    const maybeQuote = value[0];
+      // Check if double quoted
+      const maybeQuote = value[0];
 
-    // Remove surrounding quotes
-    value = value.replace(/^(['"`])([\s\S]*)\1$/gm, "$2");
+      // Remove surrounding quotes
+      value = value.replace(/^(['"`])([\s\S]*)\1$/gm, "$2");
 
-    // Expand newlines if double quoted
-    if (maybeQuote === '"') {
-      value = value.replace(/\\n/g, "\n");
-      value = value.replace(/\\r/g, "\r");
+      // Expand newlines if double quoted
+      if (maybeQuote === '"') {
+        value = value.replace(/\\n/g, "\n");
+        value = value.replace(/\\r/g, "\r");
+      }
+
+      const keyValueItem = new EnvironmentKeyValueTreeItem(
+        key,
+        { type: inferType(value), value, options: parseOptions(match[3]) },
+        file
+      );
+
+      // Add to items
+      if (currentGroup) {
+        currentGroup.children.push(keyValueItem);
+      } else {
+        items.push(keyValueItem);
+      }
     }
-
-    // Add to object
-    obj[key] = {
-      value,
-      type: inferType(value),
-      options: parseOptions(match[3]),
-    };
   }
 
-  return obj;
+  if (currentGroup) {
+    items.push(currentGroup);
+  }
+
+  return items;
 };
 
 export const inferType = (value: string): EnvironmentKeyValueType => {

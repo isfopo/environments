@@ -3,6 +3,7 @@ import { parseEnvironmentContent, replace } from "./helpers/parse";
 import { EnvironmentWorkspaceFolderTreeItem } from "./classes/TreeItems/EnvironmentWorkspaceFolderTreeItem";
 import { EnvironmentKeyValueTreeItem } from "./classes/TreeItems/EnvironmentKeyValueTreeItem";
 import { EnvironmentFileTreeItem } from "./classes/TreeItems/EnvironmentFileTreeItem";
+import { EnvironmentGroupTreeItem } from "./classes/TreeItems/EnvironmentGroupTreeItem";
 
 export class EnvironmentTreeviewProvider
   implements vscode.TreeDataProvider<vscode.TreeItem>
@@ -36,7 +37,7 @@ export class EnvironmentTreeviewProvider
         const selected = e.selection[0];
         if (selected instanceof EnvironmentKeyValueTreeItem) {
           await vscode.window.showTextDocument(
-            await vscode.workspace.openTextDocument(selected.parent.uri)
+            await vscode.workspace.openTextDocument(selected.file)
           );
         }
       });
@@ -120,11 +121,11 @@ export class EnvironmentTreeviewProvider
 
   async edit(element: EnvironmentKeyValueTreeItem, input: string) {
     const content = new TextDecoder().decode(
-      await vscode.workspace.fs.readFile(element.parent.uri)
+      await vscode.workspace.fs.readFile(element.file)
     );
 
     await vscode.workspace.fs.writeFile(
-      element.parent.uri,
+      element.file,
       new TextEncoder().encode(replace(content, element.key, input))
     );
 
@@ -160,13 +161,10 @@ export class EnvironmentTreeviewProvider
       }
     } else if (element instanceof EnvironmentWorkspaceFolderTreeItem) {
       return this.getFileData(element.folder);
+    } else if (element instanceof EnvironmentGroupTreeItem) {
+      return element.children;
     } else if (element instanceof EnvironmentFileTreeItem) {
-      return Promise.resolve(
-        Object.keys(element.content).map(
-          (key): EnvironmentKeyValueTreeItem =>
-            new EnvironmentKeyValueTreeItem(key, element.content[key], element)
-        )
-      );
+      return element.children;
     }
   }
 
@@ -194,7 +192,7 @@ export class EnvironmentTreeviewProvider
         new EnvironmentFileTreeItem(
           path,
           fileUris[index],
-          parseEnvironmentContent(fileContentStrings[index])
+          parseEnvironmentContent(fileContentStrings[index], fileUris[index])
         )
     );
   }

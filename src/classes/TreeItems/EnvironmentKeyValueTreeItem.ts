@@ -6,7 +6,7 @@ export class EnvironmentKeyValueTreeItem extends vscode.TreeItem {
   constructor(
     public readonly key: string,
     public readonly value: EnvironmentKeyValue,
-    public readonly parent: EnvironmentFileTreeItem,
+    public readonly file: vscode.Uri,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.None
   ) {
