@@ -4,7 +4,7 @@ import { EnvironmentKeyValueTreeItem } from "../classes/TreeItems/EnvironmentKey
 import type { EnvironmentContent, EnvironmentKeyValueType } from "../types";
 
 const LINE =
-  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(###.*)$/gm;
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(\n###.*)$/gm;
 
 export const parseEnvironmentContent = (
   lines: string,
@@ -65,10 +65,6 @@ export const parseEnvironmentContent = (
         items.push(keyValueItem);
       }
     }
-  }
-
-  if (currentGroup) {
-    items.push(currentGroup);
   }
 
   return items;
