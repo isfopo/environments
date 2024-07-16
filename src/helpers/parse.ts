@@ -4,7 +4,7 @@ import { EnvironmentKeyValueTreeItem } from "../classes/TreeItems/EnvironmentKey
 import type { EnvironmentContent, EnvironmentKeyValueType } from "../types";
 
 const LINE =
-  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(\n###.*)$/gm;
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(\n?###.*)$/gm;
 
 export const parseEnvironmentContent = (
   lines: string,
@@ -26,7 +26,7 @@ export const parseEnvironmentContent = (
       } else {
         // Group start
         currentGroup = new EnvironmentGroupTreeItem(
-          match[4].split(" ")[1],
+          parseGroupName(match[4]),
           parsePresets(match[4])
         );
         items.push(currentGroup);
@@ -100,3 +100,14 @@ export const parsePresets = (input: string | undefined): string[] => {
 
 export const replace = (content: string, key: string, value: string): string =>
   content.replace(new RegExp(`(${key}="?)([^\\s"]*)`, "g"), `$1${value}`);
+
+export const parseGroupName = (input: string): string => {
+  // Create a regex to capture the group name between ### and presets
+  const regex = /###\s*(.*?)\s*(?=presets|$)/i;
+
+  // Execute the regex on the input string
+  const match = input.match(regex);
+
+  // Return the captured group name or an empty string if not found
+  return match?.[1].trim() ?? "";
+};
