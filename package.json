@@ -35,7 +35,7 @@
       {
         "command": "environments.set-preset",
         "title": "Set Preset",
-        "icon": "$(edit)"
+        "icon": "$(library)"
       },
       {
         "command": "environments.edit",
