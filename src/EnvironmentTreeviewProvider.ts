@@ -115,6 +115,14 @@ export class EnvironmentTreeviewProvider
     this.edit(element, element.value.value === "true" ? "false" : "true");
   }
 
+  async setPreset(element: EnvironmentGroupTreeItem, preset: string) {
+    for (const child of element.children) {
+      if (child.value.presets) {
+        await this.edit(child, child.value.presets[preset]);
+      }
+    }
+  }
+
   refresh() {
     this._onDidChangeTreeData?.fire();
   }

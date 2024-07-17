@@ -3,6 +3,7 @@ import { EnvironmentTreeviewProvider } from "./EnvironmentTreeviewProvider";
 import { EnvironmentWorkspaceFolderTreeItem } from "./classes/TreeItems/EnvironmentWorkspaceFolderTreeItem";
 import { EnvironmentFileTreeItem } from "./classes/TreeItems/EnvironmentFileTreeItem";
 import { EnvironmentKeyValueTreeItem } from "./classes/TreeItems/EnvironmentKeyValueTreeItem";
+import { EnvironmentGroupTreeItem } from "./classes/TreeItems/EnvironmentGroupTreeItem";
 
 export function activate(context: vscode.ExtensionContext) {
   const treeDataProvider = new EnvironmentTreeviewProvider(context).register();
@@ -35,6 +36,25 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (workplaceFolder && fileName) {
         treeDataProvider.create(workplaceFolder, fileName);
+      }
+    }
+  );
+
+  vscode.commands.registerCommand(
+    "environments.set-preset",
+    async (element: EnvironmentGroupTreeItem) => {
+      const preset = await vscode.window.showQuickPick(element.presets, {
+        placeHolder: "Select a preset",
+      });
+
+      if (!preset) {
+        return;
+      }
+
+      if (!element.presets.includes(preset)) {
+        vscode.window.showErrorMessage("Invalid preset");
+      } else {
+        await treeDataProvider.setPreset(element, preset);
       }
     }
   );

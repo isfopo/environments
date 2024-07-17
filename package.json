@@ -33,6 +33,11 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "environments.set-preset",
+        "title": "Set Preset",
+        "icon": "$(edit)"
+      },
+      {
         "command": "environments.edit",
         "title": "Edit",
         "icon": "$(edit)"
@@ -78,6 +83,11 @@
         {
           "command": "environments.add",
           "when": "viewItem == file",
+          "group": "inline"
+        },
+        {
+          "command": "environments.set-preset",
+          "when": "viewItem == group",
           "group": "inline"
         },
         {

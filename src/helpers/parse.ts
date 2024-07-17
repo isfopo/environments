@@ -37,26 +37,16 @@ export const parseEnvironmentContent = (
       const key = match[1];
 
       // Default undefined or null to empty string
-      let value = match[2] || "";
-
-      // Remove whitespace
-      value = value.trim();
-
-      // Check if double quoted
-      const maybeQuote = value[0];
-
-      // Remove surrounding quotes
-      value = value.replace(/^(['"`])([\s\S]*)\1$/gm, "$2");
-
-      // Expand newlines if double quoted
-      if (maybeQuote === '"') {
-        value = value.replace(/\\n/g, "\n");
-        value = value.replace(/\\r/g, "\r");
-      }
+      let value = sanitizeValue(match[2] || "");
 
       const keyValueItem = new EnvironmentKeyValueTreeItem(
         key,
-        { type: inferType(value), value, options: parseOptions(match[3]) },
+        {
+          type: inferType(value),
+          value,
+          options: parseOptions(match[3]),
+          presets: parsePresetValues(currentGroup?.presets, match[3]),
+        },
         file
       );
 
@@ -70,6 +60,25 @@ export const parseEnvironmentContent = (
   }
 
   return items;
+};
+
+export const sanitizeValue = (value: string): string => {
+  // Remove whitespace
+  value = value.trim();
+
+  // Check if double quoted
+  const maybeQuote = value[0];
+
+  // Remove surrounding quotes
+  value = value.replace(/^(['"`])([\s\S]*)\1$/gm, "$2");
+
+  // Expand newlines if double quoted
+  if (maybeQuote === '"') {
+    value = value.replace(/\\n/g, "\n");
+    value = value.replace(/\\r/g, "\r");
+  }
+
+  return value;
 };
 
 export const inferType = (value: string): EnvironmentKeyValueType => {
@@ -98,6 +107,30 @@ export const parsePresets = (input: string | undefined): string[] => {
   const match = input?.match(regex);
 
   return match?.[1].split(",") ?? [];
+};
+
+export const parsePresetValues = (
+  presets: string[] | undefined,
+  input: string | undefined
+): Record<string, string> => {
+  const result: Record<string, string> = {};
+
+  // If no presets, return empty object
+  if (!presets) {
+    return result;
+  }
+
+  for (const preset of presets) {
+    // Create a regex that finds the key followed by a colon and captures the value
+    const regex = new RegExp(`${preset}:([^\\s]*)`, "i");
+    // Execute the regex on the input string
+    const match = input?.match(regex);
+    if (match) {
+      result[preset] = sanitizeValue(match[1]);
+    }
+  }
+
+  return result;
 };
 
 export const replace = (content: string, key: string, value: string): string =>
