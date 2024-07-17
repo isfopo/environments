@@ -1,11 +1,14 @@
 import * as vscode from "vscode";
-import type { EnvironmentContent } from "../../types";
+import { EnvironmentGroupTreeItem } from "./EnvironmentGroupTreeItem";
+import { EnvironmentKeyValueTreeItem } from "./EnvironmentKeyValueTreeItem";
 
 export class EnvironmentFileTreeItem extends vscode.TreeItem {
   constructor(
     public readonly name: string,
     public readonly uri: vscode.Uri,
-    public readonly content: EnvironmentContent,
+    public readonly children: Array<
+      EnvironmentGroupTreeItem | EnvironmentKeyValueTreeItem
+    >,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed
   ) {

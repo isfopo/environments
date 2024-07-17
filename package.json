@@ -2,7 +2,7 @@
   "name": "environments",
   "displayName": "Environments",
   "publisher": "isfopo",
-  "description": "Manage your environments from your sidebar.",
+  "description": "Manage your environments from your sidebar",
   "version": "0.0.36",
   "icon": "assets/icon.png",
   "type": "module",
@@ -31,6 +31,11 @@
         "command": "environments.refresh",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "environments.set-preset",
+        "title": "Set Preset",
+        "icon": "$(library)"
       },
       {
         "command": "environments.edit",
@@ -78,6 +83,11 @@
         {
           "command": "environments.add",
           "when": "viewItem == file",
+          "group": "inline"
+        },
+        {
+          "command": "environments.set-preset",
+          "when": "viewItem == group-has-presets",
           "group": "inline"
         },
         {
