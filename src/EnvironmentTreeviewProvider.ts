@@ -96,17 +96,68 @@ export class EnvironmentTreeviewProvider
     this.refresh();
   }
 
-  async add(element: EnvironmentFileTreeItem, key: string, value: string) {
-    let content = new TextDecoder().decode(
-      await vscode.workspace.fs.readFile(element.uri)
-    );
+  async add(
+    element: EnvironmentFileTreeItem | EnvironmentGroupTreeItem,
+    key: string,
+    value: string
+  ) {
+    if (element instanceof EnvironmentFileTreeItem) {
+      let content = new TextDecoder().decode(
+        await vscode.workspace.fs.readFile(element.uri)
+      );
 
-    content += `${key}="${value}"\n`;
+      content += `${key}="${value}"\n`;
 
-    await vscode.workspace.fs.writeFile(
-      element.uri,
-      new TextEncoder().encode(content)
-    );
+      await vscode.workspace.fs.writeFile(
+        element.uri,
+        new TextEncoder().encode(content)
+      );
+    } else if (element instanceof EnvironmentGroupTreeItem) {
+      let content = new TextDecoder().decode(
+        await vscode.workspace.fs.readFile(element.children[0].file)
+      );
+
+      // Find the group's section in the content
+      const groupName = element.label;
+      const groupStartRegex = new RegExp(`### ${groupName}`, "g");
+      const groupEndRegex = /\n###/g;
+
+      const groupStartMatch = groupStartRegex.exec(content);
+
+      if (groupStartMatch) {
+        // Find the end of the group starting from the group's start position
+        groupEndRegex.lastIndex = groupStartMatch.index;
+        const groupEndMatch = groupEndRegex.exec(content);
+
+        if (groupEndMatch) {
+          const insertionPoint = groupEndMatch.index;
+
+          // Insert the key-value pair at the end of the group but before "###"
+          const newContent =
+            content.slice(0, insertionPoint) +
+            `\n${key}="${value}"` +
+            content.slice(insertionPoint);
+
+          await vscode.workspace.fs.writeFile(
+            element.children[0].file,
+            new TextEncoder().encode(newContent)
+          );
+        } else {
+          // If the group end is not found, append the key-value at the end of the group's section
+          const insertionPoint =
+            groupStartMatch.index + groupStartMatch[0].length;
+          const newContent =
+            content.slice(0, insertionPoint) +
+            `\n${key}="${value}"\n###\n` +
+            content.slice(insertionPoint);
+
+          await vscode.workspace.fs.writeFile(
+            element.children[0].file,
+            new TextEncoder().encode(newContent)
+          );
+        }
+      }
+    }
 
     this.refresh();
   }

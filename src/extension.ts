@@ -61,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.commands.registerCommand(
     "environments.add",
-    async (element: EnvironmentFileTreeItem) => {
+    async (element: EnvironmentFileTreeItem | EnvironmentGroupTreeItem) => {
       const key = await vscode.window.showInputBox({
         prompt: "Enter the key for the new environment variable",
       });
