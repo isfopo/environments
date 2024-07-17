@@ -13,7 +13,7 @@ export class EnvironmentGroupTreeItem extends vscode.TreeItem {
     this.presets = presets;
     this.children = children;
 
-    if (presets.length > 1) {
+    if (presets.length > 0) {
       this.contextValue = "group-has-presets";
     } else {
       this.contextValue = "group";
