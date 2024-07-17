@@ -87,7 +87,7 @@
         },
         {
           "command": "environments.set-preset",
-          "when": "viewItem == group",
+          "when": "viewItem == group-has-presets",
           "group": "inline"
         },
         {

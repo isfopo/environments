@@ -10,8 +10,13 @@ export class EnvironmentGroupTreeItem extends vscode.TreeItem {
       .TreeItemCollapsibleState.Collapsed
   ) {
     super(name, collapsibleState);
-    this.contextValue = "group";
     this.presets = presets;
     this.children = children;
+
+    if (presets.length > 1) {
+      this.contextValue = "group-has-presets";
+    } else {
+      this.contextValue = "group";
+    }
   }
 }
