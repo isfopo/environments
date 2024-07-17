@@ -4,7 +4,7 @@ import { EnvironmentKeyValueTreeItem } from "../classes/TreeItems/EnvironmentKey
 import type { EnvironmentContent, EnvironmentKeyValueType } from "../types";
 
 const LINE =
-  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(\n?###.*)$/gm;
+  /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(#.*)?(?:$|$)|^\s*(\n###.*)$/gm;
 
 export const parseEnvironmentContent = (
   lines: string,
@@ -13,6 +13,8 @@ export const parseEnvironmentContent = (
   const items: (EnvironmentKeyValueTreeItem | EnvironmentGroupTreeItem)[] = [];
   let currentGroup: EnvironmentGroupTreeItem | null = null;
 
+  // Add a new line at start of file to match first line
+  lines = "\n" + lines;
   // Convert line breaks to same format
   lines = lines.replace(/\r\n?/gm, "\n");
 
