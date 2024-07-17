@@ -33,6 +33,11 @@
         "icon": "$(refresh)"
       },
       {
+        "command": "environments.add",
+        "title": "Add",
+        "icon": "$(add)"
+      },
+      {
         "command": "environments.set-preset",
         "title": "Set Preset",
         "icon": "$(library)"
@@ -46,11 +51,6 @@
         "command": "environments.flip",
         "title": "Flip",
         "icon": "$(sync)"
-      },
-      {
-        "command": "environments.add",
-        "title": "Add",
-        "icon": "$(add)"
       },
       {
         "command": "environments.rename",
@@ -82,7 +82,7 @@
         },
         {
           "command": "environments.add",
-          "when": "viewItem == file",
+          "when": "viewItem == file || viewItem == group-has-presets || viewItem == group",
           "group": "inline"
         },
         {
@@ -149,7 +149,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile-web",
     "compile-web": "vite build",
-    "watch-web": "vite build --watch"
+    "watch-web": "vite build"
   },
   "devDependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
