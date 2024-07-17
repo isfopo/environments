@@ -2,7 +2,7 @@
   "name": "environments",
   "displayName": "Environments",
   "publisher": "isfopo",
-  "description": "Manage your environments from your sidebar.",
+  "description": "Manage your environments from your sidebar",
   "version": "0.0.36",
   "icon": "assets/icon.png",
   "type": "module",
