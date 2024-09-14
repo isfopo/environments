@@ -1,6 +1,6 @@
 # Environments
 
-An extension to manage environments from your .env files.
+A VS Code extension to manage environments from your .env files.
 
 ## Features
 
