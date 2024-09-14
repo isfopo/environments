@@ -3,7 +3,7 @@
   "displayName": "Environments",
   "publisher": "isfopo",
   "description": "Manage your environments from your sidebar",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "icon": "assets/icon.png",
   "type": "module",
   "engines": {
