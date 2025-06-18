@@ -5,7 +5,7 @@
   "description": "Manage your environments from your sidebar",
   "version": "0.0.41",
   "icon": "assets/icon.png",
-  "type": "module",
+  "type": "commonjs",
   "engines": {
     "vscode": "^1.100.0"
   },
