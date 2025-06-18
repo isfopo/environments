@@ -7,7 +7,7 @@
   "icon": "assets/icon.png",
   "type": "module",
   "engines": {
-    "vscode": "^1.91.0"
+    "vscode": "^1.100.0"
   },
   "bugs": {
     "url": "https://github.com/isfopo/environments/issues"
@@ -153,10 +153,10 @@
   },
   "devDependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-    "@types/node": "^20.14.10",
-    "@types/vscode": "^1.91.0",
-    "eslint": "^9.7.0",
+    "@types/node": "^22.15.31",
+    "@types/vscode": "^1.100.0",
+    "eslint": "^9.28.0",
     "typescript": "^5.5.3",
-    "vite": "^5.3.3"
+    "vite": "^6.3.5"
   }
 }
