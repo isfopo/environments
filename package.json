@@ -153,7 +153,7 @@
   },
   "devDependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-    "@types/node": "^22.15.31",
+    "@types/node": "^24.0.1",
     "@types/vscode": "^1.100.0",
     "eslint": "^9.28.0",
     "typescript": "^5.5.3",
